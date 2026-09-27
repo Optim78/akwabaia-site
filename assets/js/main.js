@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMenu();
   initCurrency();
   initFilters();
+  initCarousels();
   document.querySelectorAll('form[data-form]').forEach(initForm);
 });
 
@@ -134,5 +135,29 @@ function initForm(form) {
       window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
     }
     status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
+
+/* ---------- Carrousels de captures ----------
+   Boutons précédent / suivant + défilement automatique toutes les 4 s
+   (mis en pause au survol, désactivé si l'utilisateur limite les animations). */
+function initCarousels() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.carousel').forEach((c) => {
+    const track = c.querySelector('.carousel__track');
+    const go = (dir) => {
+      const w = track.clientWidth;
+      const atEnd = track.scrollLeft + w >= track.scrollWidth - 5;
+      const atStart = track.scrollLeft <= 5;
+      if (dir > 0 && atEnd) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else if (dir < 0 && atStart) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+      else track.scrollBy({ left: dir * w, behavior: 'smooth' });
+    };
+    c.querySelector('.prev').addEventListener('click', () => go(-1));
+    c.querySelector('.next').addEventListener('click', () => go(1));
+    if (reduce) return;
+    let timer = setInterval(() => go(1), 4000);
+    c.addEventListener('mouseenter', () => clearInterval(timer));
+    c.addEventListener('mouseleave', () => { timer = setInterval(() => go(1), 4000); });
   });
 }
