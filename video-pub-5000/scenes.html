@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AkwabaIA – Pub vidéo 5000 F</title>
+<!--
+  Publicité « Votre vidéo publicitaire professionnelle à 5 000 FCFA ».
+  Toute l'animation est une fonction pure du temps : render(t) (t en secondes).
+  Aperçu : ouvrir ce fichier (boucle muette, ?t=30 pour démarrer à 30 s). Rendu : node render.mjs puis bash mix.sh
+-->
+<style>
+@font-face{font-family:P;font-weight:400;src:url(build/fonts/poppins-400.woff2)}
+@font-face{font-family:P;font-weight:500;src:url(build/fonts/poppins-500.woff2)}
+@font-face{font-family:P;font-weight:600;src:url(build/fonts/poppins-600.woff2)}
+@font-face{font-family:P;font-weight:700;src:url(build/fonts/poppins-700.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(build/fonts/poppins-800.woff2)}
+@font-face{font-family:P;font-weight:900;src:url(build/fonts/poppins-900.woff2)}
+:root{--navy:#0F1B2D;--navy2:#16263F;--navy3:#1E3354;--yellow:#F5A623;--gold:#FFC93C;--orange:#FF5A1F;--pink:#FF2E7E;--green:#1FA37A;--wa:#25D366;--muted:#B8C4D6;--red:#E5484D}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+body{font-family:P,system-ui,sans-serif;color:#fff}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--navy);transform-origin:0 0}
+.abs{position:absolute;left:0;top:0;will-change:transform,opacity}
+.scene{position:absolute;inset:0;width:1080px;height:1920px}
+.w{display:inline-block;will-change:transform,opacity}
+.y{color:var(--yellow)} .m{color:var(--muted)}
+h1{font-weight:900;line-height:1.02;letter-spacing:-2px}
+.pill{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font-weight:700}
+.shadow{box-shadow:0 40px 90px rgba(0,0,0,.5)}
+img{display:block}
+#grid{position:absolute;inset:-200px;background-image:radial-gradient(rgba(255,255,255,.09) 2px,transparent 2px);background-size:54px 54px;opacity:.5}
+#bg .blob{position:absolute;border-radius:50%;filter:blur(120px)}
+#vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:70}
+.wipe{position:absolute;left:-300px;top:0;width:1680px;height:2400px;z-index:50}
+
+/* téléphone / fil d'actualité */
+.phone{width:620px;height:1180px;border-radius:76px;background:#05080d;padding:22px;box-shadow:0 60px 120px rgba(0,0,0,.6),inset 0 0 0 3px #2a3443}
+.phone .scr{width:100%;height:100%;border-radius:56px;overflow:hidden;background:#fff;position:relative}
+.post{width:576px;background:#fff;color:#1c1e21;padding-bottom:18px}
+.post .hd{display:flex;align-items:center;gap:16px;padding:22px 24px;font-weight:600;font-size:26px}
+.post .hd i{width:58px;height:58px;border-radius:50%;background:#d6dbe3;display:block}
+.post .ph{width:576px;height:640px;background:#ccc center/cover}
+.post .ft{padding:16px 24px;font-size:24px;color:#65676b;display:flex;gap:24px}
+.post .ln{height:16px;background:#e4e6eb;border-radius:8px;margin:10px 24px}
+
+/* avant / après */
+.ba{width:860px;height:1075px;border-radius:40px;overflow:hidden;position:relative}
+.ba .lab{position:absolute;top:30px;font-size:34px;font-weight:800;padding:10px 26px;border-radius:999px;letter-spacing:3px}
+.notif{background:#fff;color:var(--navy);border-radius:28px;padding:20px 28px;display:flex;gap:20px;align-items:center;font-size:30px;font-weight:700;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.notif b{width:64px;height:64px;border-radius:18px;background:var(--wa);display:grid;place-items:center;flex:none}
+
+/* tuiles business */
+.tile{width:440px;height:470px;border-radius:36px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.tile .im{position:absolute;inset:0;background:center/cover}
+.tile .nm{position:absolute;left:0;right:0;bottom:0;padding:70px 28px 24px;font-size:44px;font-weight:800;background:linear-gradient(180deg,transparent,rgba(0,0,0,.85))}
+
+/* inclus */
+.inc{display:flex;align-items:center;gap:26px;font-size:58px;font-weight:800;margin-bottom:26px}
+.inc b{width:96px;height:96px;border-radius:28px;background:var(--yellow);display:grid;place-items:center;flex:none}
+.plat{font-size:38px;padding:16px 32px;background:#fff;color:var(--navy);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+
+/* prix */
+.old{font-size:150px;font-weight:900;color:#fff;position:relative;white-space:nowrap}
+.old i{position:absolute;left:-20px;right:-20px;top:52%;height:22px;background:var(--red);border-radius:12px;transform-origin:left center}
+.burst{width:1000px;height:1000px}
+.price{font-size:250px;font-weight:900;letter-spacing:-8px;line-height:.9;color:var(--navy)}
+.conf{position:absolute;width:22px;height:34px;border-radius:5px}
+
+.wa{background:var(--wa);color:#fff;font-size:46px;font-weight:800;padding:28px 46px 28px 32px;gap:22px}
+.digits{font-size:116px;font-weight:900;letter-spacing:2px;font-variant-numeric:tabular-nums}
+.endchip{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);font-size:30px;padding:12px 26px;font-weight:600}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg" class="scene">
+    <div id="grid"></div>
+    <div class="blob abs" id="blobY" style="width:900px;height:900px;background:rgba(245,166,35,.32)"></div>
+    <div class="blob abs" id="blobP" style="width:800px;height:800px;background:rgba(255,46,126,.22)"></div>
+    <div class="blob abs" id="blobB" style="width:1000px;height:1000px;background:rgba(52,98,170,.38)"></div>
+  </div>
+
+  <!-- S1 — ACCROCHE : fil d'actualité, votre produit passe inaperçu -->
+  <div id="s1" class="scene">
+    <div class="abs phone" id="s1phone" style="left:230px;top:600px">
+      <div class="scr"><div class="abs" id="s1feed"></div></div>
+    </div>
+    <div class="abs" id="s1t" style="left:70px;top:190px;width:940px">
+      <h1 class="kin" style="font-size:132px">Vos produits sont <span class="y">TOP…</span></h1>
+    </div>
+    <div class="abs" id="s1q" style="left:70px;top:1540px;width:940px">
+      <h1 class="kin" style="font-size:92px;text-shadow:0 10px 40px rgba(0,0,0,.6)">…mais personne ne les <span class="y">voit&nbsp;?</span></h1>
+    </div>
+    <div class="abs" id="s1eye" style="left:770px;top:1340px;width:200px;height:200px;border-radius:50%;background:var(--red);display:grid;place-items:center;box-shadow:0 20px 50px rgba(0,0,0,.4)">
+      <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>
+    </div>
+  </div>
+
+  <!-- S2 — PROBLÈME : photo terne, défilement -->
+  <div id="s2" class="scene">
+    <div class="abs" id="s2t" style="left:70px;top:190px;width:940px">
+      <h1 class="kin" style="font-size:112px">Une simple photo, <span class="m">sans effet…</span></h1>
+    </div>
+    <div class="abs" id="s2photo" style="left:240px;top:640px">
+      <div style="width:600px;height:740px;background:url(img/attieke.jpg) center/cover;filter:grayscale(.75) brightness(.8) contrast(.8) blur(1.5px);border-radius:24px;border:14px solid #fff" class="shadow"></div>
+    </div>
+    <div class="abs pill" id="s2bored" style="left:560px;top:1310px;background:#fff;color:var(--navy);font-size:40px;padding:16px 34px">2 <svg width="40" height="40" viewBox="0 0 24 24" fill="#E5484D"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.4 4.5 6.1 4.5c2.2 0 3.6 1.2 4.4 2.4h3c.8-1.2 2.2-2.4 4.4-2.4 3.7 0 5.7 3.9 4.1 7.2C19.5 16.4 12 21 12 21z"/></svg> · 0 commande</div>
+    <div class="abs" id="s2swipe" style="left:430px;top:1000px">
+      <svg width="220" height="300" viewBox="0 0 22 30" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 28c-2-2-5-6-5-9 0-1.5 1.8-2 2.8-.8L8 21V5.5a1.8 1.8 0 0 1 3.6 0V15l6 1.2c1.4.3 2.3 1.6 2.1 3L19 28"/><path d="M4 7l4-5 4 5" stroke="#F5A623"/></svg>
+    </div>
+    <div class="abs" id="s2c" style="left:70px;top:1490px;width:940px">
+      <div class="kin" style="font-size:66px;font-weight:800;line-height:1.12">…et vos clients font <span class="y">défiler</span>, sans s'arrêter.</div>
+    </div>
+  </div>
+
+  <!-- S3 — TRANSFORMATION AVANT / APRÈS -->
+  <div id="s3" class="scene">
+    <div class="abs" id="s3t" style="left:70px;top:180px;width:940px">
+      <h1 class="kin" style="font-size:82px">Je transforme vos produits en <span class="y">vidéos publicitaires professionnelles</span></h1>
+    </div>
+    <div class="abs ba shadow" id="s3ba" style="left:110px;top:640px">
+      <!-- APRÈS (dessous) -->
+      <div class="abs" id="s3after" style="width:860px;height:1075px;background:linear-gradient(160deg,#2a1505,#0F1B2D 60%)">
+        <div class="abs" id="s3afterImg" style="left:0;top:0;width:860px;height:1075px;background:url(img/attieke.jpg) center/cover;filter:saturate(1.35) contrast(1.08) brightness(1.05)"></div>
+        <div class="abs" style="left:0;top:0;width:860px;height:1075px;background:linear-gradient(180deg,rgba(15,27,45,.0) 35%,rgba(15,27,45,.92) 100%)"></div>
+        <div class="abs" id="s3tag" style="left:40px;top:660px"><div style="font-size:30px;font-weight:700;color:var(--gold);letter-spacing:4px">CHEZ TANTIE AWA</div><div style="font-size:78px;font-weight:900;line-height:1">Attiéké<br>poisson frit</div></div>
+        <div class="abs pill" id="s3price" style="left:560px;top:80px;background:var(--orange);font-size:52px;font-weight:900;padding:18px 34px;transform-origin:center">2 500 F</div>
+        <div class="abs pill" id="s3cmd" style="left:40px;top:930px;background:var(--yellow);color:var(--navy);font-size:38px;font-weight:800;padding:18px 36px">Commandez maintenant →</div>
+      </div>
+      <!-- AVANT (dessus, découpé par le balayage) -->
+      <div class="abs" id="s3before" style="width:860px;height:1075px;background:url(img/attieke.jpg) center/cover;filter:grayscale(.75) brightness(.8) contrast(.8) blur(2px)"></div>
+      <div class="abs" id="s3line" style="left:0;top:-20px;width:10px;height:1115px;background:#fff;box-shadow:0 0 40px 10px rgba(255,201,60,.9)"></div>
+      <div class="lab" id="s3labA" style="left:30px;background:rgba(0,0,0,.6)">AVANT</div>
+      <div class="lab" id="s3labB" style="right:30px;background:var(--yellow);color:var(--navy)">APRÈS</div>
+    </div>
+    <div class="abs" id="s3me" style="left:250px;top:560px;width:580px;height:780px;border-radius:44px;overflow:hidden;border:10px solid var(--yellow);box-shadow:0 50px 100px rgba(0,0,0,.6)">
+      <img src="img/alassane-casquette.jpg" style="width:100%;height:100%;object-fit:cover;object-position:50% 20%">
+      <div class="abs pill" style="left:24px;top:680px;background:var(--navy);font-size:34px;padding:10px 26px">Alassane · AkwabaIA</div>
+    </div>
+    <div class="abs notif" id="s3n1" style="left:520px;top:520px"><b><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 2H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg></b>Nouvelle commande !</div>
+    <div class="abs notif" id="s3n2" style="left:40px;top:1660px"><b style="background:var(--pink)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.4 4.5 6.1 4.5c2.2 0 3.6 1.2 4.4 2.4h3c.8-1.2 2.2-2.4 4.4-2.4 3.7 0 5.7 3.9 4.1 7.2C19.5 16.4 12 21 12 21z"/></svg></b>« Je veux ça ! »</div>
+    <div class="abs notif" id="s3n3" style="left:560px;top:1700px"><b style="background:var(--yellow)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></b>Partagée 12 fois</div>
+    <div class="abs" id="s3t2" style="left:70px;top:180px;width:940px">
+      <h1 class="kin" style="font-size:96px">qui arrêtent le regard… <span class="y">et qui font vendre.</span></h1>
+    </div>
+  </div>
+
+  <!-- S4 — POUR TOUS LES BUSINESS -->
+  <div id="s4" class="scene">
+    <div class="abs tile" id="tl1" style="left:70px;top:230px"><div class="im" style="background-image:url(img/boutique.jpg)"></div><div class="nm">Boutique</div></div>
+    <div class="abs tile" id="tl2" style="left:570px;top:270px"><div class="im" style="background-image:url(img/poulet.jpg)"></div><div class="nm">Restaurant</div></div>
+    <div class="abs tile" id="tl3" style="left:70px;top:740px"><div class="im" style="background-image:url(img/maquillage.jpg)"></div><div class="nm">Cosmétiques</div></div>
+    <div class="abs tile" id="tl4" style="left:570px;top:780px"><div class="im" style="background-image:url(img/sacs.jpg)"></div><div class="nm">Mode</div></div>
+    <div class="abs tile" id="tl5" style="left:70px;top:1290px;width:940px;height:240px;background:linear-gradient(90deg,rgba(19,122,90,.97) 35%,rgba(19,122,90,.15)),url(img/services.jpg) right 30%/62% auto no-repeat,#fff">
+      <div class="nm" style="background:none;padding:0;left:40px;top:80px;font-size:64px">Services</div></div>
+    <div class="abs" id="s4stamp" style="left:60px;top:1580px;width:960px;text-align:center">
+      <div class="pill" style="background:var(--yellow);color:var(--navy);font-size:68px;font-weight:900;padding:22px 50px;transform:rotate(-3deg)">TOUS LES BUSINESS</div>
+    </div>
+  </div>
+
+  <!-- S5 — CE QUI EST INCLUS -->
+  <div id="s5" class="scene">
+    <div class="abs" id="s5h" style="left:70px;top:200px;width:940px"><div class="pill" style="font-size:34px;color:var(--yellow);letter-spacing:6px">TOUT EST INCLUS</div></div>
+    <div class="abs" id="s5list" style="left:70px;top:320px;width:940px">
+      <div class="inc" id="i1"><b><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0F1B2D" stroke-width="2.4" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4z"/></svg></b>Script accrocheur</div>
+      <div class="inc" id="i2"><b><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0F1B2D" stroke-width="2.4" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></b>Voix off pro</div>
+      <div class="inc" id="i3"><b><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0F1B2D" stroke-width="2.4" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></b>Musique</div>
+      <div class="inc" id="i4"><b><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0F1B2D" stroke-width="2.4" stroke-linecap="round"><path d="M12 3l1.9 5.8L20 10l-5 3.6L16.9 20 12 16.4 7.1 20 9 13.6 4 10l6.1-1.2z"/></svg></b>Animations</div>
+    </div>
+    <div class="abs" id="s5fmt" style="left:70px;top:1010px;width:940px">
+      <div style="font-size:54px;font-weight:800;line-height:1.15">Le format <span class="y">parfait</span> pour :</div>
+    </div>
+    <div class="abs" id="s5frame" style="left:600px;top:1130px;width:400px;height:533px;border:8px solid var(--yellow);border-radius:40px;overflow:hidden;background:url(img/ecommerce.jpg) center/cover"><div style="position:absolute;right:16px;top:16px;background:var(--navy);color:var(--yellow);font-size:34px;font-weight:900;padding:6px 18px;border-radius:999px">9:16</div></div>
+    <div class="abs pill plat" id="p1" style="left:70px;top:1160px">TikTok</div>
+    <div class="abs pill plat" id="p2" style="left:70px;top:1290px">Facebook</div>
+    <div class="abs pill plat" id="p3" style="left:70px;top:1420px">Instagram</div>
+    <div class="abs pill plat" id="p4" style="left:70px;top:1550px;background:var(--wa);color:#fff">WhatsApp</div>
+  </div>
+
+  <!-- S6 — PREUVE : une vraie pub réalisée -->
+  <div id="s6" class="scene">
+    <div class="abs" id="s6t" style="left:70px;top:190px;width:940px">
+      <h1 class="kin" style="font-size:96px">Comme cette vidéo, réalisée par <span class="y">AkwabaIA</span></h1>
+    </div>
+    <div class="abs phone" id="s6phone" style="left:270px;top:560px;width:540px;height:980px;border-radius:66px">
+      <div class="scr" style="border-radius:48px;background:#000"><canvas id="s6cv" width="420" height="746" style="width:496px;height:936px;display:block"></canvas></div>
+    </div>
+    <div class="abs pill" id="s6tag" style="left:60px;top:1390px;background:#fff;color:var(--navy);font-size:36px;padding:16px 30px 16px 18px;box-shadow:0 20px 40px rgba(0,0,0,.4)">
+      <span style="width:50px;height:50px;border-radius:50%;background:var(--red);display:grid;place-items:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M6 4l15 8-15 8z"/></svg></span>Pub « CV pro » · 50 s</div>
+    <div class="abs pill" id="s6tag2" style="left:640px;top:700px;background:var(--yellow);color:var(--navy);font-size:34px;padding:14px 28px">Voix off + musique</div>
+  </div>
+
+  <!-- S7 — RÉVÉLATION DU PRIX -->
+  <div id="s7" class="scene">
+    <div class="abs" id="s7dark" style="width:1080px;height:1920px;background:#070d17"></div>
+    <div class="abs" id="s7q" style="left:70px;top:300px;width:940px;text-align:center">
+      <h1 style="font-size:130px">Et le prix <span class="y">?</span></h1>
+    </div>
+    <div class="abs" id="s7o1" style="left:0;top:640px;width:1080px;text-align:center"><span class="old">50 000 F<i id="s7x1"></i></span></div>
+    <div class="abs" id="s7o2" style="left:0;top:900px;width:1080px;text-align:center"><span class="old">20 000 F<i id="s7x2"></i></span></div>
+    <div class="abs" id="s7burst" style="left:40px;top:560px">
+      <svg class="burst" viewBox="-50 -50 100 100"><polygon id="s7poly" fill="#F5A623"/></svg>
+    </div>
+    <div class="abs" id="s7only" style="left:0;top:770px;width:1080px;text-align:center;font-size:64px;font-weight:900;color:var(--navy);letter-spacing:8px">SEULEMENT</div>
+    <div class="abs" id="s7price" style="left:0;top:900px;width:1080px;text-align:center"><div class="price">5 000</div><div style="font-size:90px;font-weight:900;color:var(--navy);margin-top:6px">FCFA</div></div>
+    <div id="s7conf" class="abs" style="width:1080px;height:1920px"></div>
+  </div>
+
+  <!-- S8 — APPEL À L'ACTION -->
+  <div id="s8" class="scene">
+    <div class="abs" id="s8circle" style="left:460px;top:640px;width:860px;height:860px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFC45C,var(--yellow) 55%,#d98a0c)"></div>
+    <div class="abs" id="s8photo" style="left:470px;top:520px"><img src="../assets/img/alassane-coulibaly.webp" style="height:1200px"></div>
+    <div class="abs" id="s8fade" style="left:0;top:1300px;width:1080px;height:620px;background:linear-gradient(180deg,rgba(15,27,45,0),var(--navy) 50%)"></div>
+    <div class="abs" id="s8t" style="left:70px;top:190px;width:940px">
+      <h1 class="kin" style="font-size:112px">Envoyez-moi vos <span class="y">photos</span></h1>
+    </div>
+    <div class="abs" id="s8badge" style="left:70px;top:470px">
+      <div class="pill" style="background:var(--orange);font-size:50px;font-weight:900;padding:16px 36px;transform:rotate(-4deg)">5 000 FCFA</div>
+    </div>
+    <div class="abs" id="s8cta" style="left:70px;top:820px">
+      <div class="pill wa shadow" id="s8btn">
+        <svg width="66" height="66" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9 3 3.3 8.6 3.3 15.5c0 2.4.7 4.7 2 6.7L3 29l7-2.2c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3zm0 23c-2 0-3.9-.6-5.6-1.6l-.4-.2-4.1 1.3 1.3-4-.3-.4a10.3 10.3 0 0 1-1.7-5.6C5.2 9.8 10 5.3 16 5.3s10.7 4.5 10.7 10.2S22 26 16 26zm5.9-7.6c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.8 5 2.8 1.1 3.4.9 4 .8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+        WhatsApp
+      </div>
+      <div style="margin-top:30px;display:flex;align-items:baseline;gap:20px">
+        <span id="s8pre" class="m" style="font-size:46px;font-weight:600">+225</span>
+        <span class="digits"><span class="dg">07</span> <span class="dg">78</span> <span class="dg">62</span> <span class="dg">74</span> <span class="dg y">60</span></span>
+      </div>
+    </div>
+    <div class="abs" id="s8rest" style="left:70px;top:1150px;width:430px">
+      <div class="kin" style="font-size:58px;text-shadow:0 6px 30px rgba(15,27,45,.9);font-weight:800;line-height:1.1">Je m'occupe <span class="y">du reste.</span></div>
+    </div>
+    <div class="abs" id="s8end" style="left:70px;top:1450px;width:940px">
+      <img src="../assets/img/akwabaia-horizontal-fond-sombre.svg" style="height:116px">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px" id="s8chips">
+        <span class="pill endchip">TikTok</span><span class="pill endchip">Facebook</span><span class="pill endchip">Instagram</span><span class="pill endchip">WhatsApp</span>
+      </div>
+      <div style="margin-top:22px;font-size:36px;font-weight:700" class="y" id="s8url">akwabaia.com</div>
+    </div>
+  </div>
+
+  <img class="abs" id="bug" src="../assets/img/akwabaia-horizontal-fond-sombre.svg" style="left:70px;top:90px;height:60px;z-index:40">
+  <div class="wipe abs" id="wp1" style="background:var(--yellow)"></div>
+  <div class="wipe abs" id="wp2" style="background:var(--pink)"></div>
+  <div class="wipe abs" id="wp3" style="background:#fff"></div>
+  <div class="wipe abs" id="wp4" style="background:var(--yellow)"></div>
+  <div class="wipe abs" id="wp5" style="background:var(--green)"></div>
+  <div class="abs" id="flash" style="width:1080px;height:1920px;background:#fff;z-index:60"></div>
+  <div class="abs" id="flash2" style="width:1080px;height:1920px;background:#fff;z-index:60"></div>
+  <div id="vignette"></div>
+</div>
+
+<script src="build/timings.js"></script>
+<script>
+// ---------- moteur (identique à la pub CV) ----------
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const EASE = {
+  lin: x => x, out: x => 1 - Math.pow(1 - x, 3), in: x => x * x * x,
+  io: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  back: x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  expo: x => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),
+};
+const DEF = { o: 1, x: 0, y: 0, s: 1, r: 0, b: 0, rx: 0, ry: 0 };
+const TRACKS = [], FX = [];
+function at(word, after = 0) {
+  const norm = x => x.toLowerCase().replace(/[.,:;?!…]/g, '');
+  const pool = WORDS.filter(w => w.t != null && w.t >= after);
+  const w = pool.find(w => norm(w.w) === norm(word)) || pool.find(w => norm(w.w).includes(norm(word)));
+  if (!w) throw new Error('mot introuvable: ' + word);
+  return w.t;
+}
+function anim(el, frames) {
+  el = typeof el === 'string' ? $(el) : el;
+  let prev = { ...DEF };
+  const fr = frames.map(([t, p, e]) => (prev = { ...prev, ...p }, [t, prev, e]));
+  TRACKS.push({ el, fr });
+}
+function sample(fr, t) {
+  if (t <= fr[0][0]) return fr[0][1];
+  for (let i = 1; i < fr.length; i++) {
+    if (t <= fr[i][0]) {
+      const [t0, a] = fr[i - 1], [t1, b, e] = fr[i];
+      const k = EASE[e || 'out']((t - t0) / Math.max(1e-6, t1 - t0)), r = {};
+      for (const key in b) r[key] = a[key] + (b[key] - a[key]) * k;
+      return r;
+    }
+  }
+  return fr[fr.length - 1][1];
+}
+function apply(el, p) {
+  // opacité (et non visibility) : un enfant « visible » ne peut pas réapparaître sous un parent masqué
+  if (p.o <= 0.003) { el.style.opacity = 0; return; }
+  el.style.opacity = p.o;
+  const td = (p.rx || p.ry) ? `perspective(1800px) rotateX(${p.rx}deg) rotateY(${p.ry}deg) ` : '';
+  el.style.transform = `translate(${p.x}px,${p.y}px) ${td}rotate(${p.r}deg) scale(${p.s})`;
+  el.style.filter = p.b > 0.05 ? `blur(${p.b}px)` : '';
+}
+function kin(el, times, opt = {}) {
+  el = typeof el === 'string' ? $(el) : el;
+  const words = [];
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/([ \t\n]+)/).forEach(part => {
+        if (!part) return;
+        if (/^[ \t\n]+$/.test(part)) frag.appendChild(document.createTextNode(' '));
+        else { const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.appendChild(s); words.push(s); }
+      });
+      n.replaceWith(frag);
+    } else walk(n);
+  });
+  walk(el);
+  words.forEach((w, i) => {
+    const t = Array.isArray(times) ? times[Math.min(i, times.length - 1)] : times + i * (opt.stagger ?? 0.07);
+    anim(w, [[t - 0.001, { o: 0, y: 70, b: 12, s: 0.85 }], [t + 0.34, { o: 1, y: 0, b: 0, s: 1 }, 'back']]);
+  });
+  return words;
+}
+const W = (...list) => { let after = 0; return list.map(x => { const [w, a] = Array.isArray(x) ? x : [x, after]; after = at(w, a); return after; }); };
+function scene(id, t0, t1, inFx = { o: 0 }, outFx = { o: 0 }, d = 0.35) {
+  anim(id, [[t0 - 0.002, { ...DEF, o: 0 }], [t0 - 0.001, { ...DEF, ...inFx }, 'lin'], [t0 + d, { ...DEF }], [t1 - d, {}], [t1, outFx, 'in'], [t1 + 0.001, { o: 0 }, 'lin']]);
+}
+function wipe(id, tc, dir = 1, d = 0.6) {
+  const from = dir > 0 ? 2300 : -2600, to = dir > 0 ? -2600 : 2300;
+  anim(id, [[tc - d / 2, { x: 0, y: from, r: -8 }], [tc, { y: -200 }, 'io'], [tc + d / 2, { y: to }, 'in']]);
+}
+const pop = (id, t, from = { o: 0, s: .3 }) => anim(id, [[t - .02, from], [t + .35, { o: 1, s: 1, x: 0, y: 0, r: 0 }, 'back']]);
+
+// ---------- FOND ----------
+FX.push(t => {
+  const p = (el, x, y) => el.style.transform = `translate(${x}px,${y}px)`;
+  p($('#blobY'), 500 + Math.sin(t * .45) * 260, -200 + Math.cos(t * .37) * 220);
+  p($('#blobP'), -300 + Math.cos(t * .4) * 220, 1300 + Math.sin(t * .5) * 200);
+  p($('#blobB'), -200 + Math.sin(t * .3) * 300, 400 + Math.cos(t * .33) * 260);
+  $('#grid').style.transform = `translate(${(t * 14) % 54}px,${(t * 24) % 54}px)`;
+});
+
+// ---------- S1 : ACCROCHE ----------
+const T2 = at('Une') - .05;
+scene('#s1', 0, T2, { o: 1 }, { o: 0, s: 1.3, b: 16 }, .25);
+{ // fil d'actualité : posts génériques + le produit, qui défile trop vite
+  const feed = $('#s1feed');
+  // votre post (terne) noyé entre des posts concurrents attractifs
+  const imgs = [['img/attieke.jpg', 'Ma boutique', 2, 1], ['img/grillades.jpg', 'Chez Koffi', '1,2 k', 0], ['img/shopping.jpg', 'Mode Abidjan', '3,4 k', 0], ['img/attieke.jpg', 'Ma boutique', 2, 1], ['img/beaute.jpg', 'Beauty CI', '2,1 k', 0], ['img/buffet.jpg', 'Resto Plateau', '980', 0]];
+  imgs.forEach(([src, who, likes, dull], i) => {
+    const d = document.createElement('div'); d.className = 'post';
+    d.innerHTML = `<div class="hd"><i></i>${who}</div><div class="ph" style="background-image:url(${src});${dull ? 'filter:grayscale(.7) brightness(.85) blur(1px)' : ''}"></div><div class="ft">♡ ${likes} · ${dull ? 0 : 48} commentaire${dull ? '' : 's'}</div><div class="ln" style="width:70%"></div><div class="ln" style="width:45%"></div>`;
+    feed.appendChild(d);
+  });
+  FX.push(t => {
+    const v = t < 1.2 ? t * 120 : 144 + (t - 1.2) * 1100; // lent puis défilement rapide
+    feed.style.transform = `translateY(${-(v % 2040)}px)`;
+    feed.style.filter = t > 1.25 ? `blur(${Math.min(6, (t - 1.2) * 12)}px)` : '';
+  });
+}
+anim('#s1phone', [[0, { o: 0, y: 500, r: 8, s: .82 }], [.55, { o: 1, y: -150, r: -3 }, 'expo'], [T2, { r: 2, y: -190 }, 'lin']]);
+kin('#s1t h1', W('Vos', 'produits', 'sont', 'top'));
+kin('#s1q h1', W('mais', 'personne', 'ne', 'les', 'voit'));
+pop('#s1eye', at('voit') - .1, { o: 0, s: 0, r: -60 });
+
+// ---------- S2 : PROBLÈME ----------
+const T3 = 7.75;
+scene('#s2', T2, T3, { o: 0, s: .8 }, { o: 1 }, .3);
+kin('#s2t h1', W('Une', 'simple', 'photo', 'sans', 'effet'));
+anim('#s2photo', [[T2, { o: 0, s: 1.3, r: 6 }], [T2 + .5, { o: 1, s: 1, r: -2 }, 'expo'], [at('défiler') - .1, { r: -2 }], [at('défiler') + .4, { y: -1500, r: -10, b: 14 }, 'in']]);
+anim('#s2bored', [[at('effet') + .08, { o: 0, s: .4, x: 60 }], [at('effet') + .45, { o: 1, s: 1, x: 0 }, 'back'], [at('défiler') - .1, {}], [at('défiler') + .4, { y: -1500, b: 14 }, 'in']]);
+anim('#s2swipe', [[at('défiler') - .3, { o: 0, y: 200 }], [at('défiler'), { o: 1, y: 0 }], [at('défiler') + .45, { y: -260 }, 'in'], [at('défiler') + .6, { o: 0, y: 0 }], [at('sans', 6) - .1, { o: 1, y: 0 }], [at('sans', 6) + .35, { y: -260 }, 'in'], [at('sans', 6) + .5, { o: 0 }]]);
+kin('#s2c > div', W('et', 'vos', 'clients', 'font', 'défiler', 'sans', "s'arrêter"));
+
+// ---------- S3 : TRANSFORMATION ----------
+wipe('#wp1', T3, 1);
+const T4 = 14.45;
+scene('#s3', T3, T4, { o: 1 }, { o: 1 }, .01);
+kin('#s3t h1', W('Moi', 'je', 'transforme', 'vos', 'produits', 'en', 'vidéos', 'publicitaires', 'professionnelles').slice(1));
+anim('#s3t', [[at('qui', 11) - .25, {}], [at('qui', 11) + .05, { o: 0, y: -80, b: 8 }, 'in']]);
+kin('#s3t2 h1', W(['qui', 11], 'arrêtent', 'le', 'regard', 'et', 'qui', 'font', 'vendre'));
+anim('#s3ba', [[T3, { o: 0, s: .7, y: 200 }], [T3 + .6, { o: 1, s: 1, y: 0 }, 'expo'], [T4, { s: 1.04 }, 'lin']]);
+anim('#s3me', [[T3 + .02, { o: 0, s: .5, r: -8 }], [T3 + .35, { o: 1, s: 1, r: -3 }, 'back'], [at('transforme') + .1, { r: -2 }], [at('transforme') + .45, { o: 0, s: .5, x: -500, r: -20 }, 'in']]);
+{ // balayage avant -> après
+  const a = at('transforme') + .45, b = a + 1.1;
+  FX.push(t => {
+    const p = EASE.io(clamp((t - a) / (b - a)));
+    $('#s3before').style.clipPath = `inset(0 0 0 ${p * 100}%)`;
+    $('#s3line').style.transform = `translateX(${p * 860 - 5}px)`;
+    $('#s3line').style.opacity = p > 0 && p < 1 ? 1 : 0;
+    $('#s3afterImg').style.transform = `scale(${1.15 + (t - a) * .03})`;
+  });
+  anim('#s3labA', [[T3 + .4, { o: 0 }], [T3 + .7, { o: 1 }], [a + .5, {}], [a + .8, { o: 0 }]]);
+  anim('#s3labB', [[b - .2, { o: 0, s: .5 }], [b + .15, { o: 1, s: 1 }, 'back']]);
+  anim('#s3tag', [[b, { o: 0, x: -100 }], [b + .4, { o: 1, x: 0 }, 'expo']]);
+  anim('#s3price', [[b + .2, { o: 0, s: 0, r: -30 }], [b + .55, { o: 1, s: 1, r: 8 }, 'back']]);
+  FX.push(t => { if (t > b + .6) $('#s3price').style.transform += ` scale(${1 + .05 * Math.sin((t - b) * 9)})`; });
+  anim('#s3cmd', [[b + .45, { o: 0, y: 60 }], [b + .8, { o: 1, y: 0 }, 'back']]);
+}
+pop('#s3n1', at('vendre') - .5, { o: 0, s: .3, x: 200 });
+pop('#s3n2', at('vendre') - .2, { o: 0, s: .3, x: -200 });
+pop('#s3n3', at('vendre') + .1, { o: 0, s: .3, x: 200 });
+
+// ---------- S4 : TOUS LES BUSINESS ----------
+wipe('#wp2', T4, -1);
+const T5 = 18.85;
+scene('#s4', T4, T5, { o: 1 }, { o: 1 }, .01);
+['Boutique', 'restaurant', 'cosmétiques', 'mode', 'services'].forEach((w, i) => {
+  const t = at(w, 14);
+  anim('#tl' + (i + 1), [[t - .05, { o: 0, s: .4, r: (i % 2 ? 12 : -12), y: 100 }], [t + .4, { o: 1, s: 1, r: (i % 2 ? 3 : -3), y: 0 }, 'back'], [T5, { s: 1.05, y: -30 }, 'lin']]);
+});
+FX.push(t => $$('#s4 .tile .im').forEach((im, i) => im.style.transform = `scale(${1.1 + .06 * Math.sin(t * 1.3 + i)})`));
+anim('#s4stamp', [[at('tous', 16) - .05, { o: 0, s: 2.4 }], [at('tous', 16) + .2, { o: 1, s: 1 }, 'in'], [at('tous', 16) + .3, { s: 1.08 }], [at('tous', 16) + .45, { s: 1 }]]);
+
+// ---------- S5 : INCLUS ----------
+wipe('#wp3', T5, 1);
+const T6 = 25.1;
+scene('#s5', T5, T6, { o: 1 }, { o: 1 }, .01);
+anim('#s5h', [[T5, { o: 0, x: -60 }], [T5 + .4, { o: 1, x: 0 }]]);
+['Script', 'voix', 'musique', 'animations'].forEach((w, i) => anim('#i' + (i + 1), [[at(w, 18) - .05, { o: 0, x: -200 }], [at(w, 18) + .35, { o: 1, x: 0 }, 'back']]));
+anim('#s5fmt', [[at('format', 21) - .1, { o: 0, y: 40 }], [at('format', 21) + .3, { o: 1, y: 0 }]]);
+anim('#s5frame', [[at('format', 21), { o: 0, s: .4, r: -20 }], [at('format', 21) + .5, { o: 1, s: 1, r: 0 }, 'back']]);
+['TikTok', 'Facebook', 'Instagram', 'WhatsApp'].forEach((w, i) => pop('#p' + (i + 1), at(w, 21), { o: 0, s: .3, x: -100 }));
+
+// ---------- S6 : PREUVE ----------
+wipe('#wp4', T6, -1);
+const T7 = 28.95;
+scene('#s6', T6, T7, { o: 1 }, { o: 1 }, .01);
+kin('#s6t h1', W('Comme', 'cette', 'vidéo', 'réalisée', 'par', 'AkwabaIA'));
+anim('#s6phone', [[T6, { o: 0, y: 600, r: -10 }], [T6 + .6, { o: 1, y: 0, r: 2 }, 'expo'], [T7, { r: -1, s: 1.04 }, 'lin']]);
+pop('#s6tag', at('réalisée') , { o: 0, s: .3, x: -100 });
+pop('#s6tag2', at('AkwabaIA', 26) , { o: 0, s: .3, x: 100 });
+{ // lecture d'un extrait de la vraie pub CV (images préchargées et dessinées sur un canvas)
+  const N = 162, frames = [], cv = $('#s6cv'), ctx = cv.getContext('2d');
+  for (let i = 0; i < N; i++) { const im = new Image(); im.src = `img/montage/f${String(i).padStart(3, '0')}.jpg`; frames.push(im); }
+  window.PRELOAD = frames;
+  let last = -1;
+  FX.push(t => { const i = clamp(Math.floor((t - T6) * 30), 0, N - 1); if (i !== last && frames[i].complete) { ctx.drawImage(frames[i], 0, 0, 420, 746); last = i; } });
+}
+
+// ---------- S7 : PRIX ----------
+const TP = at('Seulement');
+scene('#s7', T7, 35.75, { o: 1 }, { o: 1 }, .01);
+anim('#flash', [[T7 - .05, { o: 0 }], [T7, { o: .8 }, 'lin'], [T7 + .3, { o: 0 }]]);
+anim('#s7q', [[at('Et', 28) - .05, { o: 0, s: .5 }], [at('prix', 28) + .1, { o: 1, s: 1 }, 'back'], [TP - .3, {}], [TP, { o: 0, y: -200 }, 'in']]);
+FX.push(t => { const k = t > at('prix', 28) + .2 && t < TP ? Math.sin(t * 50) * 3 : 0; $('#s7q h1').style.transform = `translate(${k}px,0)`; });
+[['#s7o1', '#s7x1', at('cinquante')], ['#s7o2', '#s7x2', at('vingt')]].forEach(([o, x, t]) => {
+  anim(o, [[t - .15, { o: 0, s: 1.6 }], [t + .1, { o: 1, s: 1 }, 'in'], [TP - .3, {}], [TP, { o: 0, s: .4 }, 'in']]);
+  FX.push(tt => { $(x).style.transform = `rotate(-6deg) scaleX(${EASE.out(clamp((tt - t - .45) / .2))})`; });
+});
+{ // explosion + prix
+  const pts = []; for (let i = 0; i < 48; i++) { const r = i % 2 ? 50 : 38; const a = i / 48 * Math.PI * 2; pts.push(`${(Math.cos(a) * r).toFixed(2)},${(Math.sin(a) * r).toFixed(2)}`); }
+  $('#s7poly').setAttribute('points', pts.join(' '));
+  anim('#s7burst', [[TP - .02, { o: 0, s: 0, r: -90 }], [TP + .35, { o: 1, s: 1, r: 0 }, 'back'], [36, { r: 40 }, 'lin']]);
+  anim('#s7only', [[TP, { o: 0, y: -60 }], [TP + .3, { o: 1, y: 0 }, 'back']]);
+  const tp2 = at('cinq', TP);
+  anim('#s7price', [[tp2 - .05, { o: 0, s: 3 }], [tp2 + .15, { o: 1, s: 1 }, 'in'], [tp2 + .25, { s: 1.12 }], [tp2 + .45, { s: 1 }], [35.7, { s: 1.06 }, 'lin']]);
+  anim('#flash2', [[tp2 + .1, { o: 0 }], [tp2 + .15, { o: .7 }, 'lin'], [tp2 + .5, { o: 0 }]]);
+  FX.push(t => { const k = t > tp2 + .15 && t < tp2 + .5 ? (1 - (t - tp2 - .15) / .35) * 14 : 0; $('#s7').style.transform += ` translate(${Math.sin(t * 90) * k}px,${Math.cos(t * 77) * k}px)`; });
+  // confettis déterministes
+  const box = $('#s7conf'), cols = ['#F5A623', '#FF2E7E', '#1FA37A', '#fff', '#FF5A1F', '#4DA3FF'];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const C = []; for (let i = 0; i < 90; i++) { const d = document.createElement('div'); d.className = 'conf'; d.style.background = cols[i % 6]; box.appendChild(d); C.push({ d, a: rnd() * Math.PI * 2, v: 900 + rnd() * 1500, spin: (rnd() - .5) * 1600, delay: rnd() * .15 }); }
+  FX.push(t => C.forEach(c => { const tt = t - tp2 - c.delay; if (tt < 0) { c.d.style.opacity = 0; return; }
+    const x = 540 + Math.cos(c.a) * c.v * tt, y = 1060 + Math.sin(c.a) * c.v * tt * .8 + 1400 * tt * tt;
+    c.d.style.opacity = tt > 2.6 ? 0 : 1; c.d.style.transform = `translate(${x}px,${y}px) rotate(${c.spin * tt}deg)`; }));
+}
+anim('#s7dark', [[T7, { o: 1 }], [TP - .05, { o: 1 }], [TP + .2, { o: 0 }]]);
+
+// ---------- S8 : APPEL À L'ACTION ----------
+wipe('#wp5', 35.75, 1);
+scene('#s8', 35.75, 60, { o: 1 }, { o: 1 }, .01);
+anim('#s8circle', [[35.8, { s: 0 }], [36.4, { s: 1 }, 'back'], [46, { s: 1.06 }, 'lin']]);
+anim('#s8photo', [[35.85, { o: 0, x: 400 }], [36.5, { o: 1, x: 0 }, 'expo'], [46, { s: 1.04 }, 'lin']]);
+kin('#s8t h1', W('Envoyez-moi', 'vos', 'photos'));
+anim('#s8badge', [[at('photos') + .2, { o: 0, s: 0, r: -40 }], [at('photos') + .55, { o: 1, s: 1, r: 0 }, 'back']]);
+anim('#s8cta', [[at('WhatsApp', 36) - .15, { o: 0, y: 80 }], [at('WhatsApp', 36) + .25, { o: 1, y: 0 }, 'back']]);
+FX.push(t => { const p = t > 37.4 ? .5 + .5 * Math.sin((t - 37.4) * 6) : 0; $('#s8btn').style.boxShadow = `0 0 0 ${p * 22}px rgba(37,211,102,${.45 - p * .35}),0 30px 60px rgba(0,0,0,.4)`; });
+anim('#s8pre', [[at('zéro') - .2, { o: 0 }], [at('zéro'), { o: 1 }]]);
+{ const ts = [at('zéro'), at('soixante-dix-huit'), at('soixante-deux'), at('soixante-quatorze'), at('soixante')];
+  $$('.dg').forEach((d, i) => anim(d, [[ts[i] - .05, { o: 0, y: 60, s: .6 }], [ts[i] + .25, { o: 1, y: 0, s: 1 }, 'back']])); }
+kin('#s8rest > div', W(['Je', 40], "m'occupe", 'du', 'reste'));
+anim('#s8end', [[at('AkwabaIA', 41) - .2, { o: 0, y: 60 }], [at('AkwabaIA', 41) + .3, { o: 1, y: 0 }, 'back']]);
+$$('#s8chips span').forEach((c, i) => pop(c, 42.6 + i * .15));
+anim('#s8url', [[43.4, { o: 0, x: -30 }], [43.8, { o: 1, x: 0 }]]);
+
+anim('#bug', [[T2, { o: 0, y: -30 }], [T2 + .4, { o: .95, y: 0 }], [T7 - .2, {}], [T7, { o: 0 }], [35.8, { o: 0 }]]);
+
+// ---------- RENDU ----------
+window.DURATION = 46;
+window.render = t => { TRACKS.forEach(({ el, fr }) => apply(el, sample(fr, t))); FX.forEach(f => f(t)); };
+window.ready = Promise.all([document.fonts.ready, ...$$('img').map(i => i.decode().catch(() => {})), ...PRELOAD.map(i => i.decode().catch(() => {}))]);
+if (!/render=1/.test(location.search)) {
+  const fit = () => { const s = Math.min(innerWidth / 1080, innerHeight / 1920); $('#stage').style.transform = `scale(${s})`; };
+  fit(); addEventListener('resize', fit);
+  const q = new URLSearchParams(location.search), t0 = performance.now() - (+q.get('t') || 0) * 1000;
+  const loop = () => { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+  ready.then(loop);
+}
+</script>
+</body>
+</html>
