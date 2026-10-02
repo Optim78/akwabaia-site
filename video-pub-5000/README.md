@@ -9,7 +9,7 @@ L'histoire suit cet ordre : **problème → transformation → pour qui → ce q
 | `AkwabaIA-pub-video-5000F-4x5.mp4` | Déclinaison pour les fils Facebook, Instagram et LinkedIn |
 | `scenes.html` | Moteur d'animation. Ouvert dans un navigateur, il montre l'aperçu en boucle (`?t=29` pour aller au prix) |
 | `render.mjs` / `mix.sh` | Rendu image par image, puis mixage audio et export |
-| `img/` | Visuels produits (générés avec Canva) et extrait de la pub CV utilisé comme preuve |
+| `img/` | Photos fournies (`assets/img/a-integrer/`), photo d'Alassane et extrait de la pub CV utilisé comme preuve |
 | `audio/` | Voix off (ElevenLabs « Nicolas »), musique afro / amapiano générée et bruitages |
 
 ## Script et découpage
@@ -29,7 +29,9 @@ L'histoire suit cet ordre : **problème → transformation → pour qui → ce q
 
 - **Exemple « Chez Tantie Awa — 2 500 F »** et notifications « Nouvelle commande ! », « Partagée 12 fois » : c'est une démonstration illustrative, pas un vrai client. Remplace-la par une vraie réalisation dès que tu en as une.
 - **« Pas 50 000, pas 20 000 »** : c'est une accroche de comparaison avec ce que coûte une pub ailleurs, pas un ancien prix barré. Si la plateforme publicitaire (Facebook Ads) refuse ce type de mention, supprime ces deux lignes.
-- **Visuels produits** : ce sont des images générées avec Canva (le réseau ne permettait de récupérer que de petites versions). Elles restent nettes à la taille affichée, mais pour une version encore plus fine, remplace-les par les photos d'un vrai client dans `img/`.
+- **Photos utilisées** (depuis `assets/img/a-integrer/`) : attiéké (avant / après), photo d'Alassane en casquette (« Moi, je transforme… »), fil d'actualité (grillades, shopping, beauté, buffet), tuiles (boutique, poulet braisé, maquillage, sacs, services) et téléphone e-commerce (formats).
+- **Écartées** : visuels marketing avec logos Google / Facebook, sac de luxe de marque, photo filigranée « @Linda_Studio ».
+- **Droits d'image** : beaucoup de ces photos semblent venir de Pinterest ou de banques d'images. Pour une campagne sponsorisée, vérifie que tu as le droit de les utiliser, ou remplace-les par des photos de vrais clients (avec leur accord).
 
 ## Légende suggérée
 
