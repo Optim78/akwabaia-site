@@ -1,0 +1,452 @@
+<title>Académie Les Éléphants</title>
+<meta name="description" content="Centre de formation football à Abidjan — écoles de foot U6 à U17, section féminine, encadrement diplômé et détection. Modèle AkwabaIA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Mulish:wght@300;400;500;600;700;800&display=swap">
+<style>
+/* Layout : hero immersif terrain, programmes en cartes, bande installations, atouts, galerie, tarifs, inscription.
+   Direction : football jeunesse ivoirien — vert gazon profond, orange énergie, nuit ; display Barlow Condensed + Mulish. */
+:root{
+  --creme:#F6F5EF;
+  --carte:#FFFFFF;
+  --nuit:#131A15;
+  --nuit-doux:#4E584F;
+  --gazon:#0F3D2C;        /* vert terrain, accent principal */
+  --gazon-clair:#1C7A50;
+  --orange:#EE7B1C;       /* accent énergie */
+  --orange-clair:#FF9C44;
+  --ligne:#E5E2D7;
+  --ombre:rgba(15,25,18,.13);
+  --max:1140px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --creme:#0E1310; --carte:#161D18; --nuit:#ECF1EC; --nuit-doux:#9FABA2;
+  --gazon:#1C7A50; --gazon-clair:#2CA06A; --orange:#FF9C44; --orange-clair:#FFB469;
+  --ligne:#232B25; --ombre:rgba(0,0,0,.45); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --creme:#0E1310; --carte:#161D18; --nuit:#ECF1EC; --nuit-doux:#9FABA2;
+  --gazon:#1C7A50; --gazon-clair:#2CA06A; --orange:#FF9C44; --orange-clair:#FFB469;
+  --ligne:#232B25; --ombre:rgba(0,0,0,.45); color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--creme);color:var(--nuit);
+  font-family:"Mulish",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,.disp{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+  line-height:1.04;text-wrap:balance;text-transform:uppercase;letter-spacing:.5px}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:20px}
+.eyebrow{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);font-weight:800;margin:0 0 .5rem}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit}
+.logo svg{width:42px;height:42px;flex:none}
+.logo .txt{display:flex;flex-direction:column;line-height:1}
+.logo .txt b{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.logo .txt small{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--orange);margin-top:2px;font-weight:700}
+
+.demo-bar{background:var(--nuit);color:var(--creme);font-size:.76rem;letter-spacing:.04em;text-align:center;padding:7px 16px}
+.demo-bar b{color:var(--orange-clair)}
+
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:color-mix(in srgb,var(--creme) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ligne)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 20px;max-width:var(--max);margin-inline:auto}
+.menu{display:none;gap:24px;list-style:none;margin:0;padding:0;font-size:.9rem;font-weight:700}
+.menu a{text-decoration:none;color:var(--nuit-doux);transition:color .2s}
+.menu a:hover{color:var(--gazon-clair)}
+@media(min-width:960px){.menu{display:flex}}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:#1a1205;
+  text-decoration:none;font-weight:800;font-size:.86rem;padding:10px 18px;border-radius:8px;white-space:nowrap;transition:background .2s,transform .15s}
+.cta-btn:hover{background:var(--orange-clair);transform:translateY(-1px)}
+
+/* HERO */
+.hero{position:relative;min-height:clamp(460px,78vh,640px);display:grid;align-items:center;color:#fff;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:url("img/f-hero.jpg") center 22%/cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,rgba(10,28,19,.9),rgba(10,28,19,.5) 60%,rgba(10,28,19,.35))}
+.hero-in{position:relative;z-index:2;max-width:640px;padding:60px 22px}
+.hero .eyebrow{color:var(--orange-clair)}
+.hero h1{font-size:clamp(2.7rem,8vw,5rem);margin:.2rem 0 1rem;color:#fff}
+.hero p.lead{font-size:1.1rem;color:rgba(255,255,255,.92);max-width:48ch;margin:0 0 1.9rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:13px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:.95rem;padding:14px 26px;border-radius:9px;
+  text-decoration:none;cursor:pointer;border:0;transition:transform .15s,background .2s,border-color .2s}
+.btn.primary{background:var(--orange);color:#1a1205;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.btn.primary:hover{transform:translateY(-2px);background:var(--orange-clair)}
+.btn.ghost{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.2)}
+
+/* Stats */
+.statbar{background:var(--gazon)}
+.statbar .in{display:grid;grid-template-columns:repeat(2,1fr);max-width:var(--max);margin-inline:auto}
+@media(min-width:620px){.statbar .in{grid-template-columns:repeat(4,1fr)}}
+.statbar div{padding:20px 12px;text-align:center;color:#fff;border-left:1px solid rgba(255,255,255,.12)}
+.statbar div:first-child{border-left:0}
+.statbar .n{font-family:"Barlow Condensed",sans-serif;font-size:2rem;color:var(--orange-clair);line-height:1}
+.statbar .l{font-size:.73rem;letter-spacing:.04em;opacity:.9;margin-top:3px;text-transform:uppercase;font-weight:600}
+
+section{padding-block:58px}
+.sec-head{max-width:62ch;margin:0 auto 38px;text-align:center}
+.sec-head h2{font-size:clamp(2rem,5vw,3rem);margin:.2rem 0 .5rem}
+.sec-head p{color:var(--nuit-doux);margin:0}
+
+/* Programmes */
+.grid-prog{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:600px){.grid-prog{grid-template-columns:1fr 1fr}}
+@media(min-width:940px){.grid-prog{grid-template-columns:repeat(3,1fr)}}
+.prog{background:var(--carte);border:1px solid var(--ligne);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.prog:hover{transform:translateY(-4px);box-shadow:0 16px 34px var(--ombre)}
+.prog .ph{aspect-ratio:3/2;overflow:hidden;position:relative}
+.prog .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.prog:hover .ph img{transform:scale(1.07)}
+.prog .cat{position:absolute;top:12px;left:12px;background:var(--orange);color:#1a1205;font-weight:800;
+  font-size:.72rem;letter-spacing:.05em;padding:5px 11px;border-radius:999px;text-transform:uppercase}
+.prog .body{padding:17px 20px 22px}
+.prog h3{font-size:1.45rem;margin:0 0 .35rem}
+.prog p{margin:0;font-size:.9rem;color:var(--nuit-doux)}
+
+/* Installations */
+.infra{background:var(--gazon);color:#fff}
+.infra .sec-head h2{color:#fff}
+.infra .eyebrow{color:var(--orange-clair)}
+.grid-infra{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:720px){.grid-infra{grid-template-columns:repeat(3,1fr)}}
+.infra-card{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/3;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+.infra-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.infra-card:hover img{transform:scale(1.06)}
+.infra-card span{position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;font-weight:700;font-size:.92rem;
+  background:linear-gradient(transparent,rgba(8,20,13,.85))}
+
+/* Atouts */
+.grid-atouts{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:560px){.grid-atouts{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.grid-atouts{grid-template-columns:repeat(4,1fr)}}
+.atout{background:var(--carte);border:1px solid var(--ligne);border-radius:16px;padding:24px 20px;text-align:center}
+.atout .ic{width:54px;height:54px;margin:0 auto 14px;border-radius:14px;background:color-mix(in srgb,var(--orange) 16%,transparent);
+  display:grid;place-items:center;color:var(--orange)}
+.atout .ic svg{width:28px;height:28px}
+.atout h3{font-size:1.2rem;margin:0 0 .4rem}
+.atout p{margin:0;font-size:.88rem;color:var(--nuit-doux)}
+
+/* Galerie */
+.gallery{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
+.gitem{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1/1;box-shadow:0 6px 16px var(--ombre)}
+.gitem.tall{aspect-ratio:1/1}
+.gitem img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.gitem:hover img{transform:scale(1.08)}
+
+/* Tarifs */
+.tarifs{background:var(--carte);border-block:1px solid var(--ligne)}
+.grid-tarifs{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:760px){.grid-tarifs{grid-template-columns:repeat(3,1fr)}}
+.plan{border:1.5px solid var(--ligne);border-radius:18px;padding:28px 24px;background:var(--creme);display:flex;flex-direction:column}
+.plan.feat{border-color:var(--orange);box-shadow:0 14px 34px var(--ombre);position:relative}
+.plan.feat::before{content:"Le plus choisi";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--orange);color:#1a1205;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:999px}
+.plan h3{font-size:1.5rem;margin:0 0 .2rem}
+.plan .age{font-size:.82rem;color:var(--nuit-doux);margin-bottom:14px}
+.plan .price{font-family:"Barlow Condensed",sans-serif;font-size:2.6rem;color:var(--gazon-clair);line-height:1}
+.plan .price small{font-size:.9rem;color:var(--nuit-doux);font-family:"Mulish",sans-serif;font-weight:600}
+.plan ul{list-style:none;margin:16px 0 20px;padding:0;display:flex;flex-direction:column;gap:9px;flex:1}
+.plan li{font-size:.9rem;display:flex;gap:9px;align-items:flex-start}
+.plan li::before{content:"✓";color:var(--gazon-clair);font-weight:800;flex:none}
+.plan .btn{justify-content:center}
+.tarif-note{text-align:center;color:var(--nuit-doux);font-size:.85rem;margin:22px 0 0}
+.tarif-note b{color:var(--nuit)}
+
+/* Démarche */
+.steps{display:grid;gap:22px;grid-template-columns:1fr;margin-top:8px;counter-reset:s}
+@media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{text-align:center;padding:0 10px;position:relative}
+.step .num{counter-increment:s;width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:var(--orange);color:#1a1205;
+  display:grid;place-items:center;font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;font-weight:700}
+.step .num::before{content:counter(s)}
+.step h3{font-size:1.25rem;margin:0 0 .35rem}
+.step p{margin:0;color:var(--nuit-doux);font-size:.9rem}
+
+/* Avis */
+.avis{background:var(--creme)}
+.grid-avis{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:760px){.grid-avis{grid-template-columns:repeat(3,1fr)}}
+.quote{background:var(--carte);border:1px solid var(--ligne);border-radius:16px;padding:24px 22px}
+.quote .stars{color:var(--orange);letter-spacing:3px;margin-bottom:10px}
+.quote p{margin:0 0 16px;font-size:1rem}
+.quote .who{font-family:"Barlow Condensed",sans-serif;font-size:1.15rem;text-transform:uppercase;letter-spacing:.5px}
+.quote .where{font-size:.8rem;color:var(--nuit-doux)}
+
+/* Contact */
+.contact-wrap{background:var(--gazon);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr;color:#fff}
+@media(min-width:880px){.contact-wrap{grid-template-columns:1fr 1fr}}
+.contact-media{position:relative;min-height:220px}
+.contact-media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.contact-body{padding:34px 30px}
+.contact-body .eyebrow{color:var(--orange-clair)}
+.contact-body h2{font-size:clamp(1.9rem,4.5vw,2.6rem);color:#fff;margin:.2rem 0 .5rem}
+.contact-body>p{color:rgba(255,255,255,.85);margin:0 0 1.3rem;font-size:.95rem}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:.8rem;font-weight:700;margin-bottom:5px;color:rgba(255,255,255,.92)}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;border-radius:9px;border:1.5px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.09);color:#fff;font-family:inherit;font-size:.95rem}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.55)}
+.field select option{color:#1a1205}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+.row2{display:grid;gap:13px;grid-template-columns:1fr 1fr}
+.contact-body .btn.primary{width:100%;justify-content:center;margin-top:4px}
+.pay{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.pay span{font-size:.72rem;font-weight:700;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.form-note{font-size:.78rem;color:rgba(255,255,255,.75);margin:10px 0 0;text-align:center}
+
+/* Footer */
+footer{background:var(--nuit);color:var(--creme);padding-block:44px 28px;margin-top:12px}
+:root:not([data-theme="light"]) footer{background:#090D0A}
+:root[data-theme="dark"] footer{background:#090D0A}
+.foot-grid{display:grid;gap:28px;grid-template-columns:1fr;max-width:var(--max);margin-inline:auto;padding-inline:20px}
+@media(min-width:760px){.foot-grid{grid-template-columns:2fr 1fr 1fr}}
+.foot-grid h4{font-family:"Barlow Condensed",sans-serif;font-size:1.2rem;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;color:#fff}
+.foot-grid a{color:rgba(246,245,239,.72);text-decoration:none;display:block;margin-bottom:8px;font-size:.9rem}
+.foot-grid a:hover{color:var(--orange-clair)}
+.foot-brand p{color:rgba(246,245,239,.65);font-size:.9rem;margin:.6rem 0 0;max-width:42ch}
+.made{border-top:1px solid rgba(255,255,255,.12);margin-top:30px;padding-top:20px;text-align:center;font-size:.84rem;color:rgba(246,245,239,.7)}
+.made a{color:var(--orange-clair);font-weight:700;text-decoration:none}
+.made .tiny{display:block;font-size:.74rem;opacity:.6;margin-top:6px}
+
+.wa-float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;width:56px;height:56px;border-radius:50%;
+  background:#25D366;display:grid;place-items:center;box-shadow:0 8px 22px rgba(37,211,102,.45);text-decoration:none;transition:transform .15s}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float svg{width:30px;height:30px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<!-- Logo réutilisable : écusson + ballon -->
+<template id="logo-svg">
+  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Académie Les Éléphants">
+    <path d="M24 2 44 9v13c0 12-8 20-20 24C12 42 4 34 4 22V9L24 2z" fill="var(--gazon)" stroke="var(--orange)" stroke-width="2"/>
+    <circle cx="24" cy="22" r="10" fill="#fff"/>
+    <path d="M24 14l2.6 1.9-1 3.1h-3.2l-1-3.1L24 14zM15.6 20.2l3 .1 1 3.1-2.6 1.9-2.4-1.8.9-3.3zM32.4 20.2l.9 3.3-2.4 1.8-2.6-1.9 1-3.1 3.1-.1zM19.6 28.4h8.8l1 2.8-5.4 3.2-5.4-3.2 1-2.8z" fill="var(--gazon)"/>
+  </svg>
+</template>
+
+<div class="demo-bar">Site <b>modèle</b> — exemple réalisé par AkwabaIA pour illustrer un site de centre de formation football</div>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#top"><span class="lg"></span><span class="txt"><b>Les Éléphants</b><small>Académie de football</small></span></a>
+    <nav><ul class="menu">
+      <li><a href="#programmes">Programmes</a></li>
+      <li><a href="#installations">Installations</a></li>
+      <li><a href="#atouts">Pourquoi nous</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <a class="cta-btn" href="#contact">S'inscrire</a>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="hero-in">
+    <p class="eyebrow">Centre de formation · Abidjan</p>
+    <h1>Formons les champions de demain</h1>
+    <p class="lead">Une académie de football pour les jeunes de 6 à 17 ans, filles et garçons. Encadrement diplômé, valeurs de discipline et de respect, et le goût de l'effort.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#contact">S'inscrire maintenant</a>
+      <a class="btn ghost" href="#programmes">Nos programmes</a>
+    </div>
+  </div>
+</section>
+
+<div class="statbar"><div class="in">
+  <div><div class="n">+150</div><div class="l">jeunes formés</div></div>
+  <div><div class="n">6</div><div class="l">catégories</div></div>
+  <div><div class="n">8</div><div class="l">entraîneurs</div></div>
+  <div><div class="n">3</div><div class="l">terrains</div></div>
+</div></div>
+
+<section id="programmes">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Nos programmes</p><h2>Un parcours pour chaque âge</h2>
+      <p>De la découverte à la compétition, chaque jeune progresse à son rythme, encadré par des éducateurs formés.</p></div>
+    <div class="grid-prog">
+      <article class="prog"><div class="ph"><span class="cat">U6 – U10</span><img src="img/f-p1.jpg" alt="Jeunes enfants au football" loading="lazy"></div>
+        <div class="body"><h3>École de foot</h3><p>Éveil et plaisir du jeu : motricité, premiers gestes techniques et esprit d'équipe.</p></div></article>
+      <article class="prog"><div class="ph"><span class="cat">U11 – U13</span><img src="img/f-p3.jpg" alt="Jeunes joueurs à l'entraînement" loading="lazy"></div>
+        <div class="body"><h3>Préformation</h3><p>Maîtrise technique, lecture du jeu et postes : on pose les bases du vrai footballeur.</p></div></article>
+      <article class="prog"><div class="ph"><span class="cat">U14 – U17</span><img src="img/f-p2.jpg" alt="Action de football" loading="lazy"></div>
+        <div class="body"><h3>Perfectionnement</h3><p>Intensité, tactique et préparation physique pour viser la compétition et les clubs.</p></div></article>
+      <article class="prog"><div class="ph"><span class="cat">Gardiens</span><img src="img/f-p4.jpg" alt="Technique individuelle" loading="lazy"></div>
+        <div class="body"><h3>École de gardiens</h3><p>Formation spécifique : plongeons, placements, relances et gestion de la surface.</p></div></article>
+      <article class="prog"><div class="ph"><span class="cat">Filles</span><img src="img/f-p5.jpg" alt="Match au coucher du soleil" loading="lazy"></div>
+        <div class="body"><h3>Section féminine</h3><p>Un cadre adapté pour les filles passionnées, toutes catégories d'âge confondues.</p></div></article>
+      <article class="prog"><div class="ph"><span class="cat">Détection</span><img src="img/f-hero.jpg" alt="Jeune talent en action" loading="lazy"></div>
+        <div class="body"><h3>Détection &amp; orientation</h3><p>Repérage des talents et mise en relation avec des clubs partenaires en CI et à l'étranger.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="installations" class="infra">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Nos installations</p><h2>Un cadre fait pour progresser</h2>
+      <p>Des terrains de qualité, sécurisés et bien entretenus, pour s'entraîner dans les meilleures conditions.</p></div>
+    <div class="grid-infra">
+      <div class="infra-card"><img src="img/f-infra1.jpg" alt="Terrain couvert en gazon synthétique" loading="lazy"><span>Terrain couvert éclairé</span></div>
+      <div class="infra-card"><img src="img/f-infra2.jpg" alt="Terrain clôturé avec gradins" loading="lazy"><span>Terrain synthétique sécurisé</span></div>
+      <div class="infra-card"><img src="img/f-infra3.jpg" alt="Vue aérienne du terrain" loading="lazy"><span>Espace entièrement clôturé</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="atouts">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Pourquoi nous choisir</p><h2>Bien plus qu'un club</h2></div>
+    <div class="grid-atouts">
+      <div class="atout"><div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.6 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>
+        </div><h3>Encadrement diplômé</h3><p>Des éducateurs formés, patients et à l'écoute de chaque enfant.</p></div>
+      <div class="atout"><div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 11h8M8 15h5"/></svg>
+        </div><h3>Suivi scolaire</h3><p>Le sport oui, mais sans négliger l'école : nous suivons les résultats.</p></div>
+      <div class="atout"><div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M7 5l10 14M17 5L7 19"/></svg>
+        </div><h3>Terrains de qualité</h3><p>Des installations sûres et bien équipées pour s'entraîner sereinement.</p></div>
+      <div class="atout"><div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div><h3>Détection &amp; avenir</h3><p>Orientation vers les clubs et accompagnement des meilleurs talents.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="galerie" style="background:var(--carte);border-block:1px solid var(--ligne)">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">En images</p><h2>La vie à l'académie</h2>
+      <p>Entraînements, matchs et ambiance : l'esprit de nos Éléphants.</p></div>
+    <div class="gallery">
+      <div class="gitem"><img src="img/f-p2.jpg" alt="Action street football" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-p5.jpg" alt="Match au coucher du soleil" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-p3.jpg" alt="Joueurs à l'entraînement" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-p1.jpg" alt="Enfants qui jouent" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-p4.jpg" alt="Technique de balle" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-infra1.jpg" alt="Terrain couvert" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-infra3.jpg" alt="Terrain vu du ciel" loading="lazy"></div>
+      <div class="gitem"><img src="img/f-hero.jpg" alt="Jeune joueur en action" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="tarifs" class="tarifs">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Tarifs &amp; inscription</p><h2>Des formules simples et claires</h2>
+      <p>Choisissez la formule adaptée à votre enfant. Inscription possible toute l'année.</p></div>
+    <div class="grid-tarifs">
+      <div class="plan"><h3>École de foot</h3><div class="age">U6 à U13 · filles &amp; garçons</div>
+        <div class="price">10 000 F<small> / mois</small></div>
+        <ul><li>3 entraînements par semaine</li><li>Encadrement diplômé</li><li>Tournois et matchs amicaux</li><li>Suivi individuel</li></ul>
+        <a class="btn primary" href="#contact">S'inscrire</a></div>
+      <div class="plan feat"><h3>Perfectionnement</h3><div class="age">U14 à U17 · filles &amp; garçons</div>
+        <div class="price">15 000 F<small> / mois</small></div>
+        <ul><li>4 entraînements par semaine</li><li>Préparation physique &amp; tactique</li><li>Compétitions officielles</li><li>Détection &amp; orientation clubs</li></ul>
+        <a class="btn primary" href="#contact">S'inscrire</a></div>
+      <div class="plan"><h3>Section féminine</h3><div class="age">Toutes catégories</div>
+        <div class="price">10 000 F<small> / mois</small></div>
+        <ul><li>3 entraînements par semaine</li><li>Encadrement dédié</li><li>Tournois féminins</li><li>Esprit d'équipe &amp; respect</li></ul>
+        <a class="btn primary" href="#contact">S'inscrire</a></div>
+    </div>
+    <p class="tarif-note"><b>Frais d'inscription :</b> 15 000 F / an (tenue complète en option : 20 000 F). Paiement Orange, MTN ou Moov Money. <br>Tarifs d'exemple à titre de démonstration.</p>
+
+    <div class="steps">
+      <div class="step"><div class="num"></div><h3>Prenez contact</h3><p>Appelez-nous sur WhatsApp pour toutes les informations.</p></div>
+      <div class="step"><div class="num"></div><h3>Séance d'essai gratuite</h3><p>Votre enfant teste un entraînement, sans engagement.</p></div>
+      <div class="step"><div class="num"></div><h3>Inscription</h3><p>On finalise l'inscription et il rejoint son équipe.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="avis" class="avis">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Ils nous font confiance</p><h2>La parole aux parents</h2></div>
+    <div class="grid-avis">
+      <div class="quote"><div class="stars">★★★★★</div><p>Mon fils a gagné en confiance et en discipline. L'encadrement est sérieux et humain.</p>
+        <div class="who">Koné Issouf</div><div class="where">Parent · Yopougon</div></div>
+      <div class="quote"><div class="stars">★★★★★</div><p>Ma fille s'épanouit dans la section féminine. Enfin une académie qui pense aussi aux filles !</p>
+        <div class="who">Adjoua Marie</div><div class="where">Parent · Abobo</div></div>
+      <div class="quote"><div class="stars">★★★★★</div><p>Les coachs suivent aussi les notes à l'école. C'est ce qui a fini de me convaincre.</p>
+        <div class="who">Traoré Bakary</div><div class="where">Parent · Koumassi</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="contact-media"><img src="img/f-p3.jpg" alt="Jeunes joueurs"></div>
+      <div class="contact-body">
+        <p class="eyebrow">Inscription &amp; informations</p>
+        <h2>Inscrivez votre enfant</h2>
+        <p>Remplissez le formulaire, nous vous répondons rapidement sur WhatsApp.</p>
+        <form id="insc">
+          <div class="row2">
+            <div class="field"><label for="enfant">Nom de l'enfant</label><input id="enfant" type="text" placeholder="Prénom &amp; nom" required></div>
+            <div class="field"><label for="age">Âge</label><input id="age" type="number" min="4" max="19" placeholder="Ex : 10" required></div>
+          </div>
+          <div class="field"><label for="parent">Nom du parent</label><input id="parent" type="text" placeholder="Votre nom" required></div>
+          <div class="field"><label for="tel">Téléphone / WhatsApp</label><input id="tel" type="tel" inputmode="tel" placeholder="+225 ..." required></div>
+          <div class="field"><label for="prog">Programme souhaité</label>
+            <select id="prog">
+              <option>École de foot (U6–U13)</option><option>Préformation (U11–U13)</option>
+              <option>Perfectionnement (U14–U17)</option><option>École de gardiens</option>
+              <option>Section féminine</option><option>Je ne sais pas encore</option>
+            </select></div>
+          <button type="submit" class="btn primary">Envoyer sur WhatsApp</button>
+          <p class="form-note" id="note">Votre demande s'ouvrira dans WhatsApp, prête à envoyer.</p>
+        </form>
+        <div class="pay"><span>Orange Money</span><span>MTN Money</span><span>Moov Money</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="#top" style="color:#fff"><span class="lg"></span><span class="txt"><b style="color:#fff">Les Éléphants</b><small>Académie de football</small></span></a>
+      <p>Centre de formation football pour les jeunes de 6 à 17 ans, à Abidjan et en Côte d'Ivoire. Discipline, respect et passion du jeu.</p>
+    </div>
+    <div><h4>Programmes</h4>
+      <a href="#programmes">École de foot</a><a href="#programmes">Perfectionnement</a>
+      <a href="#programmes">Section féminine</a><a href="#programmes">École de gardiens</a></div>
+    <div><h4>Infos</h4>
+      <a href="#tarifs">Tarifs</a><a href="#contact">Inscription</a>
+      <a href="#installations">Installations</a></div>
+  </div>
+  <div class="made">Site <b style="color:var(--orange-clair)">modèle</b> réalisé par
+    <a href="https://akwabaia.com" target="_blank" rel="noopener">AkwabaIA — Le Bon IT</a>
+    <span class="tiny">Académie, tarifs et coordonnées fictifs · exemple de site de centre de formation football</span></div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/2250700000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 00-8.6 15l-1.4 5 5.2-1.3A10 10 0 1012 2z"/></svg>
+</a>
+
+<script>
+(function(){var t=document.getElementById('logo-svg');
+  document.querySelectorAll('.logo .lg').forEach(function(s){s.appendChild(t.content.cloneNode(true));});})();
+var WA="2250700000000"; // numéro démo — à remplacer par le vrai numéro du client
+document.getElementById('insc').addEventListener('submit',function(e){
+  e.preventDefault();
+  var g=function(id){return (document.getElementById(id).value||'').trim();};
+  var txt="Bonjour Académie Les Éléphants,%0A%0ADemande d'inscription :%0A"
+    +"Enfant : "+encodeURIComponent(g('enfant')||'—')+" ("+encodeURIComponent(g('age')||'?')+" ans)%0A"
+    +"Parent : "+encodeURIComponent(g('parent')||'—')+"%0A"
+    +"Programme : "+encodeURIComponent(document.getElementById('prog').value)+"%0A"
+    +(g('tel')?"Téléphone : "+encodeURIComponent(g('tel')):"");
+  window.open("https://wa.me/"+WA+"?text="+txt,"_blank");
+  document.getElementById('note').textContent="Merci ! Votre demande est prête dans WhatsApp.";
+});
+</script>
