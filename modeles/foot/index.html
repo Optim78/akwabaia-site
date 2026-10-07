@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Académie Les Éléphants</title>
 <meta name="description" content="Centre de formation football à Abidjan — écoles de foot U6 à U17, section féminine, encadrement diplômé et détection. Modèle AkwabaIA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -219,7 +224,17 @@ footer{background:var(--nuit);color:var(--creme);padding-block:44px 28px;margin-
 .wa-float svg{width:30px;height:30px}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Clic pour agrandir (lightbox) */
+main img{cursor:zoom-in}
+.gitem span,.infra-card span,.prog .cat{pointer-events:none}
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}
+.lightbox[hidden]{display:none}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:8px;box-shadow:0 14px 48px rgba(0,0,0,.6);cursor:default}
+.lb-close{position:absolute;top:10px;right:18px;color:#fff;font-size:2.6rem;line-height:1;cursor:pointer;font-family:system-ui,sans-serif}
 </style>
+</head>
+<body>
 
 <!-- Logo réutilisable : écusson + ballon -->
 <template id="logo-svg">
@@ -450,3 +465,19 @@ document.getElementById('insc').addEventListener('submit',function(e){
   document.getElementById('note').textContent="Merci ! Votre demande est prête dans WhatsApp.";
 });
 </script>
+
+<div class="lightbox" id="lb" hidden><span class="lb-close" aria-label="Fermer">&times;</span><img id="lb-img" alt=""></div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), im=document.getElementById('lb-img');
+  if(!lb) return;
+  document.querySelectorAll('main img').forEach(function(x){
+    x.addEventListener('click',function(){ im.src=x.currentSrc||x.src; im.alt=x.alt||''; lb.hidden=false; document.body.style.overflow='hidden'; });
+  });
+  function close(){ lb.hidden=true; im.src=''; document.body.style.overflow=''; }
+  lb.addEventListener('click',function(e){ if(e.target!==im) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+</body>
+</html>
