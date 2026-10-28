@@ -1,0 +1,171 @@
+/* ============================================================
+   AkwabaIA Connect — feuille de style partagée
+   Charte : bleu nuit #0F1B2D · jaune #F5A623 · vert #1FA37A
+   Polices : Poppins (titres) · Nunito Sans (texte)
+   ============================================================ */
+
+:root{
+  --navy:#0F1B2D;
+  --amber:#F5A623;
+  --amber-dark:#E8961A;
+  --green:#1FA37A;
+  --green-dark:#0B6E4F;
+  --page:#F4F6F9;
+  --card:#ffffff;
+  --ink:#2B323C;
+  --muted:#5B6470;
+  --line:#E3E7ED;
+  --line-strong:#D5DBE3;
+  --fill:#EEF1F5;
+  --fill-blue:#E8EDF5;
+  --fill-green:#E6F6F0;
+  --fill-amber:#FFF4E0;
+  --radius:12px;
+  --radius-lg:20px;
+  --maxw:1120px;
+  --font-title:'Poppins',sans-serif;
+  --font-body:'Nunito Sans',sans-serif;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.5;
+}
+img{max-width:100%;display:block}
+a{color:var(--navy)}
+input::placeholder,textarea::placeholder{color:#8A93A0}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,5vw,80px)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+h1,h2,h3{font-family:var(--font-title);color:var(--navy);margin:0}
+
+/* ---------- Boutons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:0 20px;border-radius:var(--radius);
+  font-family:var(--font-title);font-weight:600;font-size:16px;
+  text-decoration:none;border:none;cursor:pointer;line-height:1;
+  transition:background .15s,box-shadow .15s,color .15s;
+}
+.btn-primary{background:var(--amber);color:var(--navy)}
+.btn-primary:hover{background:var(--amber-dark);color:var(--navy)}
+.btn-primary.shadow{box-shadow:0 6px 18px rgba(245,166,35,.35)}
+.btn-dark{background:var(--navy);color:#fff}
+.btn-dark:hover{background:#1b2a42;color:#fff}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+.btn-outline:hover{background:rgba(15,27,45,.05);color:var(--navy)}
+.btn-ghost{background:#fff;border:1.5px solid var(--line-strong);color:var(--navy)}
+.btn-ghost:hover{border-color:var(--navy);color:var(--navy)}
+.btn-block{width:100%}
+
+.link-underline{color:var(--navy);font-family:var(--font-title);font-weight:600;
+  text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- Header ---------- */
+.site-header{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);
+  font-family:var(--font-body)}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:24px;
+  padding:0 clamp(16px,4vw,40px);min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(145deg,#F5A623,#F8C25C);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-title);font-weight:700;font-size:20px;color:var(--navy);flex:none}
+.brand-name{display:flex;flex-direction:column;gap:3px}
+.brand-name b{font-family:var(--font-title);font-weight:700;font-size:19px;color:#fff;line-height:1}
+.brand-name b i{color:var(--amber);font-style:normal}
+.brand-name small{font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--green);line-height:1}
+.main-nav{display:flex;gap:26px;flex:1;margin-left:16px}
+.main-nav a{color:#C9D2DE;text-decoration:none;font-weight:600;font-size:15px;padding:10px 0}
+.main-nav a:hover{color:#fff}
+.header-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+
+/* Bascule FR/EN */
+.lang{display:flex;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px;height:40px}
+.lang button{display:flex;align-items:center;padding:0 12px;border-radius:999px;border:none;
+  background:transparent;color:#C9D2DE;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
+.lang button.active{background:#fff;color:var(--navy)}
+
+.header-cta{display:none}
+.burger{width:44px;height:44px;border:none;background:transparent;cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;display:flex}
+.burger span{width:22px;height:2px;background:#fff;border-radius:2px;transition:.2s}
+
+@media(min-width:860px){
+  .header-cta{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:12px;
+    border:1.5px solid rgba(255,255,255,.5);color:#fff;text-decoration:none;
+    font-family:var(--font-title);font-weight:600;font-size:14px}
+  .header-cta:hover{background:rgba(255,255,255,.08)}
+  .burger{display:none}
+}
+@media(max-width:859px){
+  .main-nav{display:none;position:absolute;left:0;right:0;top:64px;z-index:40;
+    flex-direction:column;gap:0;margin:0;background:var(--navy);
+    border-bottom:1px solid rgba(255,255,255,.12);padding:8px 0}
+  .main-nav.open{display:flex}
+  .main-nav a{padding:14px clamp(16px,4vw,40px)}
+}
+
+/* ---------- Footer ---------- */
+.site-footer{background:var(--navy);padding:28px 0}
+.footer-inner{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,80px);
+  display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;
+  color:#C9D2DE;font-size:14px}
+.footer-inner .fbrand{font-family:var(--font-title);font-weight:700;font-size:16px;color:#fff}
+.footer-inner .fbrand i{color:var(--amber);font-style:normal}
+.footer-inner .fbrand span{font-family:var(--font-body);font-weight:600;font-size:14px;color:#C9D2DE}
+
+/* ---------- Badges & puces ---------- */
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;
+  font-family:var(--font-body);font-weight:700;font-size:13px;padding:5px 10px 5px 5px}
+.badge-verified{background:var(--fill-green);color:var(--green-dark)}
+.badge .check{width:16px;height:16px;border-radius:50%;background:var(--green);color:#fff;
+  font-size:10px;line-height:16px;text-align:center;font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;
+  font-weight:700;font-size:13px;padding:7px 10px}
+.pill-green{background:var(--fill-green);color:var(--green-dark)}
+.pill-amber{background:var(--fill-amber);color:#8A5A00}
+.pill-gray{background:var(--fill);color:var(--ink)}
+.pill .dot{width:8px;height:8px;border-radius:50%}
+.pill-green .dot{background:var(--green)}
+.pill-amber .dot{background:var(--amber)}
+.tag{background:var(--fill);color:var(--navy);font-weight:600;font-size:13px;
+  padding:7px 10px;border-radius:8px;display:inline-block}
+.stars{color:var(--amber);letter-spacing:1px}
+
+.kicker{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;
+  font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 11px;border-radius:999px}
+.kicker-green{color:var(--green-dark);background:var(--fill-green)}
+.kicker-navy{color:var(--navy);background:var(--fill-blue)}
+
+/* ---------- Cartes ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:clamp(18px,3vw,32px)}
+.card-sm{border-radius:16px;padding:22px}
+
+/* ---------- Champs ---------- */
+.field{display:flex;flex-direction:column;gap:7px;font-family:var(--font-body);
+  font-weight:700;font-size:14px;color:var(--navy)}
+.field input,.field textarea,.field select{
+  width:100%;border:1.5px solid var(--line-strong);border-radius:var(--radius);
+  padding:0 14px;height:52px;font-family:var(--font-body);font-weight:400;font-size:16px;
+  color:var(--navy);background:#fff;outline:none}
+.field textarea{height:auto;padding:12px 14px;line-height:1.5;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--navy);box-shadow:0 0 0 3px rgba(245,166,35,.35)}
+.field .hint{font-weight:400;font-size:13px;color:var(--muted)}
+
+/* ---------- Divers ---------- */
+.notice{display:flex;gap:10px;align-items:flex-start;background:var(--fill-blue);
+  border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;color:var(--navy)}
+.lead{color:var(--muted);font-size:16px;line-height:1.6}
+.section{padding:clamp(48px,7vw,100px) 0}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profil prestataire — AkwabaIA Connect</title>
+<meta name="description" content="Profil d'un technicien IT vérifié sur AkwabaIA Connect. Compétences, disponibilités, avis clients. Contact sécurisé via AkwabaIA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/connect.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">A</span>
+      <span class="brand-name"><b>Akwaba<i>IA</i></b><small>Connect</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html#comment" data-i18n="nav_how">Comment ça marche</a>
+      <a href="annuaire.html" data-i18n="nav_directory">Annuaire</a>
+      <a href="inscription.html" data-i18n="nav_become">Devenir prestataire</a>
+      <a href="https://akwabaia.com">akwabaia.com</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang" id="langToggle">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a class="header-cta" href="besoin.html" data-i18n="cta_need">Exprimer un besoin</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:clamp(12px,2.5vw,32px);padding-bottom:clamp(28px,5vw,72px)">
+  <a href="annuaire.html" class="link-underline" style="display:inline-flex;min-height:44px;align-items:center;text-decoration:none"><span data-i18n="p_back">← Retour à l'annuaire</span></a>
+
+  <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+    <main style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+      <!-- En-tête -->
+      <div class="card" style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:center">
+          <div style="width:clamp(88px,12vw,120px);aspect-ratio:1;flex:none;border-radius:22px;background:repeating-linear-gradient(135deg,#DDE3EA 0 7px,#E9EDF2 7px 14px)"></div>
+          <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <h1 id="pName" style="font-size:clamp(25px,4vw,34px)"></h1>
+              <span class="badge badge-verified"><span class="check">✓</span><span data-i18n="p_verified">Profil vérifié</span></span>
+            </div>
+            <div id="pTitle" style="font-weight:600;font-size:16px;color:var(--ink)"></div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:15px;flex-wrap:wrap">
+              <span class="stars" style="font-size:16px">★★★★★</span>
+              <b id="pRating" style="color:var(--navy)"></b>
+              <a href="#avis" style="color:var(--muted)"><span id="pReviews"></span> <span data-i18n="p_reviews">avis</span></a>
+              <span style="color:#C2C9D3">·</span><span id="pZone" style="color:var(--muted)"></span>
+            </div>
+          </div>
+        </div>
+        <div id="pTopPills" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+
+      <!-- Compétences -->
+      <div class="card">
+        <h2 style="font-size:19px;margin-bottom:14px" data-i18n="p_skills">Compétences</h2>
+        <div id="pSkills" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+
+      <!-- Tarif & dispo -->
+      <div class="card">
+        <div style="display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;align-items:baseline">
+          <h2 style="font-size:19px" data-i18n="p_rate_title">Tarif &amp; disponibilités</h2>
+          <span style="font-size:15px;color:var(--muted)"><span data-i18n="p_from">À partir de</span> <b id="pRate" style="font-family:var(--font-title);font-weight:700;font-size:20px;color:var(--navy)"></b></span>
+        </div>
+        <p style="margin:6px 0 2px;font-size:14px;color:var(--muted)"><span id="pRateConv"></span></p>
+        <p style="margin:2px 0 16px;font-size:14px;color:var(--muted)" data-i18n="p_rate_note">Tarif indicatif. Devis précis selon votre mission.</p>
+        <div id="pPeriods"></div>
+      </div>
+
+      <!-- Présentation -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px">
+          <h2 style="font-size:19px" data-i18n="p_about">Présentation</h2>
+          <span id="pLangTag" style="font-weight:700;font-size:12px;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line-strong);border-radius:6px;padding:5px 7px">FR</span>
+        </div>
+        <p id="pBio" style="font-size:16px;line-height:1.65;color:var(--ink);max-width:68ch"></p>
+      </div>
+
+      <!-- Avis -->
+      <div id="avis" class="card">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between">
+          <h2 style="font-size:19px" data-i18n="p_reviews_title">Avis clients</h2>
+          <span style="display:flex;align-items:center;gap:8px;font-size:15px">
+            <b id="pRating2" style="font-family:var(--font-title);font-weight:700;font-size:22px;color:var(--navy)"></b>
+            <span class="stars">★★★★★</span><span style="color:var(--muted)"><span id="pReviews2"></span> <span data-i18n="p_reviews">avis</span></span>
+          </span>
+        </div>
+        <div id="pReviewList" style="margin-top:8px"></div>
+      </div>
+
+    </main>
+
+    <!-- Aside desktop -->
+    <aside id="pAside" style="flex:0 1 340px;position:sticky;top:24px;display:none;flex-direction:column;gap:14px">
+      <div class="card" style="padding:26px;box-shadow:0 14px 36px rgba(15,27,45,.10);display:flex;flex-direction:column;gap:16px">
+        <div><span style="font-size:14px;color:var(--muted)" data-i18n="p_from">À partir de</span><div style="font-family:var(--font-title);font-weight:700;font-size:28px;line-height:1.2;color:var(--navy)"><span id="pRateAside"></span> <span style="font-family:var(--font-body);font-weight:600;font-size:15px;color:var(--muted)" data-i18n="p_per">/ intervention</span></div></div>
+        <span id="pDispoAside" class="pill pill-green" style="align-self:flex-start"></span>
+        <a id="pContactAside" href="#" class="btn btn-primary shadow" style="min-height:58px;font-size:17px" data-i18n="p_contact">Contacter via AkwabaIA</a>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;color:var(--ink)">
+          <span>🔒</span><span id="pSecure"></span>
+        </div>
+        <div style="border-top:1px solid var(--fill);padding-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px">
+          <div style="display:flex;gap:9px;align-items:center"><span style="color:var(--green);font-weight:700">✓</span><span data-i18n="p_g1">Identité et compétences vérifiées</span></div>
+          <div style="display:flex;gap:9px;align-items:center"><span style="color:var(--green);font-weight:700">✓</span><span data-i18n="p_g2">Avis de clients réels</span></div>
+          <div style="display:flex;gap:9px;align-items:center"><span style="color:var(--green);font-weight:700">✓</span><span data-i18n="p_g3">Gratuit et sans engagement</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Barre contact mobile -->
+<div id="pMobileBar" style="position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(15,27,45,.08);padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px">
+  <a id="pContactMobile" href="#" class="btn btn-primary" style="min-height:54px;font-size:17px" data-i18n="p_contact">Contacter via AkwabaIA</a>
+  <span style="font-size:13px;color:var(--muted);text-align:center" data-i18n="p_secure_short">Contact sécurisé · coordonnées jamais partagées</span>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+  </div>
+</footer>
+
+<script src="assets/connect.js"></script>
+<script>AkwabaConnect.initProfile();</script>
+</body>
+</html>
