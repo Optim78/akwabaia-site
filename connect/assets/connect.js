@@ -191,7 +191,7 @@
     why_4_t: ['Bilingue', 'Bilingual'],
     why_4_d: ['Le service et les profils, en français comme en anglais.', 'The service and profiles, in French and English.'],
     dir_title: ['Annuaire des prestataires', 'Provider directory'],
-    dir_sub: ['Tous les profils sont vérifiés par AkwabaIA.', 'All profiles are verified by AkwabaIA.'],
+    dir_sub: ['Des prestataires IT vérifiés et de nouveaux profils.', 'Verified IT providers and new profiles.'],
     f_skill: ['Compétence', 'Skill'], f_all: ['Toutes', 'All'],
     f_zone: ['Zone', 'Area'], f_all_f: ['Toutes', 'All'],
     f_type: ['Type de dispo', 'Availability'], f_all_types: ['Tous types', 'All types'],
@@ -295,6 +295,9 @@
     var avatar = p.photo
       ? '<div style="width:68px;height:68px;flex:none;border-radius:14px;background:#EEF1F5 center/cover no-repeat url(\'' + encodeURI(p.photo) + '\')"></div>'
       : '<div style="width:68px;height:68px;flex:none;border-radius:14px;background:repeating-linear-gradient(135deg,#DDE3EA 0 6px,#E9EDF2 6px 12px)"></div>';
+    var verifiedBadge = p.verified
+      ? '<span class="badge badge-verified"><span class="check">✓</span>' + (getLang() === 'en' ? 'Verified' : 'Vérifié') + '</span>'
+      : '<span class="pill pill-gray" style="padding:4px 10px;font-size:12px">' + (getLang() === 'en' ? 'To verify' : 'À vérifier') + '</span>';
     return '' +
       '<a href="profil.html?id=' + encodeURIComponent(p.id) + '" style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(15,27,45,.04)">' +
         '<div style="display:flex;gap:14px;align-items:flex-start">' +
@@ -302,7 +305,7 @@
           '<div style="min-width:0;display:flex;flex-direction:column;gap:6px">' +
             '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
               '<span style="font-family:var(--font-title);font-weight:600;font-size:17px;color:var(--navy)">' + esc(p.name) + '</span>' +
-              '<span class="badge badge-verified"><span class="check">✓</span>' + (getLang()==='en'?'Verified':'Vérifié') + '</span>' +
+              verifiedBadge +
             '</div>' +
             '<div style="display:flex;align-items:center;gap:6px;font-size:14px">' + ratingHtml + '</div>' +
             '<div style="font-size:14px;color:var(--muted)">' + esc(p.zone) + '</div>' +
@@ -406,6 +409,11 @@
     if (photoEl) photoEl.style.background = p.photo
       ? "#EEF1F5 center/cover no-repeat url('" + encodeURI(p.photo) + "')"
       : "repeating-linear-gradient(135deg,#DDE3EA 0 7px,#E9EDF2 7px 14px)";
+    var vb = document.getElementById('pVerifBadge');
+    if (vb) {
+      if (p.verified) { vb.className = 'badge badge-verified'; vb.style.padding = ''; vb.innerHTML = '<span class="check">✓</span>' + (en ? 'Verified profile' : 'Profil vérifié'); }
+      else { vb.className = 'pill pill-gray'; vb.style.padding = '5px 10px'; vb.innerHTML = (en ? 'To verify' : 'À vérifier'); }
+    }
     document.getElementById('pLangTag').textContent = en ? 'EN' : 'FR';
     set('pDispoAside', p.dispo);
     set('pSecure', t('p_secure_long'));
