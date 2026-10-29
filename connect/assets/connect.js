@@ -195,6 +195,7 @@
     f_skill: ['Compétence', 'Skill'], f_all: ['Toutes', 'All'],
     f_zone: ['Zone', 'Area'], f_all_f: ['Toutes', 'All'],
     f_type: ['Type de dispo', 'Availability'], f_all_types: ['Tous types', 'All types'],
+    f_period: ['Période', 'Period'], f_all_periods: ['Toutes périodes', 'All periods'],
     f_sort: ['Trier', 'Sort'], f_sort_rating: ['Mieux notés', 'Top rated'], f_sort_reviews: ['Plus d\'avis', 'Most reviews'],
     dir_count: ['prestataires vérifiés', 'verified providers'],
     dir_notice: ['Les coordonnées ne sont jamais affichées. Contactez un prestataire via AkwabaIA depuis son profil.',
@@ -312,6 +313,25 @@
       '</a>';
   }
 
+  function populatePeriods(sel) {
+    if (!sel) return;
+    var en = getLang() === 'en';
+    var mFr = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+    var mEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var names = en ? mEn : mFr;
+    var now = new Date();
+    var html = '<option value="">' + t('f_all_periods') + '</option>';
+    for (var i = 0; i < 6; i++) {
+      var dt = new Date(now.getFullYear(), now.getMonth() + i, 1);
+      var val = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0');
+      var lbl = names[dt.getMonth()] + ' ' + dt.getFullYear();
+      html += '<option value="' + val + '">' + lbl.charAt(0).toUpperCase() + lbl.slice(1) + '</option>';
+    }
+    var prev = sel.value;
+    sel.innerHTML = html;
+    if (prev) sel.value = prev;
+  }
+
   function initDirectory() {
     initHeader();
     var grid = document.getElementById('grid');
@@ -320,24 +340,29 @@
     var fSkill = document.getElementById('fSkill'),
         fZone = document.getElementById('fZone'),
         fType = document.getElementById('fType'),
+        fPeriod = document.getElementById('fPeriod'),
         fSort = document.getElementById('fSort');
+
+    populatePeriods(fPeriod);
 
     fetchProviders().then(function (all) {
       function render() {
-        var skill = fSkill.value, zone = fZone.value, type = fType.value, sort = fSort.value;
+        var skill = fSkill.value, zone = fZone.value, type = fType.value,
+            period = fPeriod ? fPeriod.value : '', sort = fSort.value;
         var list = all.filter(function (p) {
           if (skill && p.skills.indexOf(skill) === -1 && !p.skills.some(function(s){return s.indexOf(skill)>-1;})) return false;
           if (zone && p.zoneCat !== zone) return false;
           if (type && p.availType !== type) return false;
+          if (period && (!p.availMonths || p.availMonths.indexOf(period) === -1)) return false;
           return true;
         });
-        list.sort(function (a, b) { return sort === 'reviews' ? b.reviews - a.reviews : b.rating - a.rating; });
+        list.sort(function (a, b) { return sort === 'reviews' ? (b.reviews || 0) - (a.reviews || 0) : (b.rating || 0) - (a.rating || 0); });
         grid.innerHTML = list.map(providerCard).join('');
         countEl.textContent = list.length;
         emptyEl.style.display = list.length ? 'none' : 'block';
       }
-      [fSkill, fZone, fType, fSort].forEach(function (el) { el.addEventListener('change', render); });
-      global.__rerender = render;
+      [fSkill, fZone, fType, fPeriod, fSort].forEach(function (el) { if (el) el.addEventListener('change', render); });
+      global.__rerender = function () { populatePeriods(fPeriod); render(); };
       render();
     });
   }
