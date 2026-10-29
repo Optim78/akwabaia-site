@@ -93,14 +93,23 @@
             <span style="font-weight:700;font-size:14px;color:var(--navy)">Choisissez vos compétences (1 à 5)</span>
             <div id="skills" style="display:flex;flex-wrap:wrap;gap:8px"></div>
           </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">3</span>Vos disponibilités</legend>
           <div style="display:flex;flex-direction:column;gap:9px">
             <span style="font-weight:700;font-size:14px;color:var(--navy)">Type de disponibilité principal</span>
             <div class="seg" id="dispoType"></div>
           </div>
+          <div class="grid2" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+            <label class="field">Disponible du<input name="periode_debut" type="date" required></label>
+            <label class="field">au<input name="periode_fin" type="date" required></label>
+          </div>
+          <span class="hint" style="font-weight:400">Indiquez votre première période. Vous pourrez en ajouter d'autres plus tard via votre lien personnel.</span>
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">3</span>Présentation</legend>
+          <legend><span class="n">4</span>Présentation</legend>
           <label class="field">En français<textarea name="presentation_fr" rows="4" placeholder="Votre expérience, vos spécialités, les clients que vous aidez…" required></textarea></label>
           <label class="field">In English <span class="hint" style="font-weight:400">(optionnel, recommandé)</span><textarea name="presentation_en" rows="3" placeholder="The same, in English."></textarea></label>
           <label class="field">Photo de profil <span class="hint" style="font-weight:400">(optionnel)</span><input name="photo" type="file" accept="image/*"></label>
@@ -184,6 +193,8 @@
       return showMsg('Merci de remplir tous les champs obligatoires.', false);
     }
     if (!selectedSkills.length) return showMsg('Choisissez au moins une compétence.', false);
+    if (!f.periode_debut.value || !f.periode_fin.value) return showMsg('Indiquez votre période de disponibilité (du / au).', false);
+    if (f.periode_fin.value < f.periode_debut.value) return showMsg('La date de fin doit être après la date de début.', false);
     if (!document.getElementById('consent').checked) return showMsg('Merci d\'accepter les conditions.', false);
 
     var btn = document.getElementById('submit');
@@ -195,6 +206,7 @@
         telephone: f.telephone.value.trim(), email: f.email.value.trim(),
         zone: f.zone.value, tarif: f.tarif.value ? Number(f.tarif.value) : null,
         competences: selectedSkills, typeDispo: dispoType,
+        periodeDebut: f.periode_debut.value, periodeFin: f.periode_fin.value,
         presentationFr: f.presentation_fr.value.trim(), presentationEn: f.presentation_en.value.trim(),
         photo: photo
       };
