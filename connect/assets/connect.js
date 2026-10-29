@@ -288,6 +288,9 @@
     var dispoPill = p.available
       ? '<span class="pill pill-green"><span class="dot"></span>' + esc(p.dispo) + '</span>'
       : '<span class="pill pill-amber"><span class="dot"></span>' + esc(p.dispo) + '</span>';
+    var nextPeriod = (p.periods && p.periods.length) ? p.periods[0].dates : '';
+    var dispoBlock = '<span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' + dispoPill +
+      (nextPeriod ? '<span style="font-size:13px;color:var(--muted);white-space:nowrap">' + esc(nextPeriod) + '</span>' : '') + '</span>';
     return '' +
       '<a href="profil.html?id=' + encodeURIComponent(p.id) + '" style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(15,27,45,.04)">' +
         '<div style="display:flex;gap:14px;align-items:flex-start">' +
@@ -303,7 +306,7 @@
         '</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:6px">' + skillTags + '</div>' +
         '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--fill);padding-top:12px;flex-wrap:wrap">' +
-          dispoPill +
+          dispoBlock +
           '<span class="btn btn-outline" style="min-height:44px;padding:0 16px;font-size:14px">' + t('card_view') + '</span>' +
         '</div>' +
       '</a>';
