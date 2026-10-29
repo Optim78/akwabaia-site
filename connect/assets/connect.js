@@ -126,10 +126,22 @@
     }
   ];
 
-  /* ---------- Point de branchement unique (sample -> n8n) ---------- */
+  /* ---------- Source des données : webhook n8n (repli sur démo) ---------- */
+  var PROVIDERS_ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-providers';
+
   function fetchProviders() {
-    // Plus tard : return fetch('https://n8n.akwabaia.com/webhook/connect-providers').then(r => r.json());
-    return Promise.resolve(SAMPLE_PROVIDERS);
+    return fetch(PROVIDERS_ENDPOINT)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        var list = Array.isArray(data) ? data : (data && data.providers) || [];
+        if (!list.length) throw new Error('vide');
+        return list;
+      })
+      .catch(function (e) {
+        // Repli : si le webhook ne répond pas (ou aucun prestataire), on montre la démo
+        if (typeof console !== 'undefined') console.warn('Annuaire : repli sur les données de démo —', e.message);
+        return SAMPLE_PROVIDERS;
+      });
   }
 
   /* ---------- i18n ---------- */
@@ -268,7 +280,10 @@
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]); }); }
 
   function providerCard(p) {
-    var ratingStr = p.rating.toFixed(1).replace('.', ',');
+    var hasRating = (typeof p.rating === 'number' && p.rating > 0);
+    var ratingHtml = hasRating
+      ? '<span class="stars">★★★★★</span><b style="color:var(--navy)">' + p.rating.toFixed(1).replace('.', ',') + '</b><span style="color:var(--muted)">(' + p.reviews + ' ' + t('card_reviews') + ')</span>'
+      : '<span style="color:var(--muted)">' + (getLang() === 'en' ? 'New profile' : 'Nouveau profil') + '</span>';
     var skillTags = p.skills.slice(0, 3).map(function (s) { return '<span class="tag">' + esc(s) + '</span>'; }).join('');
     var dispoPill = p.available
       ? '<span class="pill pill-green"><span class="dot"></span>' + esc(p.dispo) + '</span>'
@@ -282,7 +297,7 @@
               '<span style="font-family:var(--font-title);font-weight:600;font-size:17px;color:var(--navy)">' + esc(p.name) + '</span>' +
               '<span class="badge badge-verified"><span class="check">✓</span>' + (getLang()==='en'?'Verified':'Vérifié') + '</span>' +
             '</div>' +
-            '<div style="display:flex;align-items:center;gap:6px;font-size:14px"><span class="stars">★★★★★</span><b style="color:var(--navy)">' + ratingStr + '</b><span style="color:var(--muted)">(' + p.reviews + ' ' + t('card_reviews') + ')</span></div>' +
+            '<div style="display:flex;align-items:center;gap:6px;font-size:14px">' + ratingHtml + '</div>' +
             '<div style="font-size:14px;color:var(--muted)">' + esc(p.zone) + '</div>' +
           '</div>' +
         '</div>' +
@@ -337,20 +352,25 @@
 
   function paintProfile(p) {
     var en = getLang() === 'en';
-    var ratingStr = p.rating.toFixed(1).replace('.', ',');
-    var conv = convFCFA(p.rateFCFA);
-    var rateMain = fmtFCFA(p.rateFCFA);
-    var convStr = '≈ ' + conv.eur + ' € · ≈ ' + conv.usd + ' $ (' + (en ? 'approx.' : 'approx.') + ')';
+    var hasRating = (typeof p.rating === 'number' && p.rating > 0);
+    var ratingStr = hasRating ? p.rating.toFixed(1).replace('.', ',') : '—';
+    var hasRate = (typeof p.rateFCFA === 'number' && p.rateFCFA > 0);
+    var rateMain = hasRate ? fmtFCFA(p.rateFCFA) : (en ? 'On request' : 'Sur demande');
+    var convStr = '';
+    if (hasRate) {
+      var conv = convFCFA(p.rateFCFA);
+      convStr = '≈ ' + conv.eur + ' € · ≈ ' + conv.usd + ' $ (approx.)';
+    }
 
     function set(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; }
     set('pName', p.name);
     set('pTitle', p.title);
     set('pRating', ratingStr); set('pRating2', ratingStr);
-    set('pReviews', p.reviews); set('pReviews2', p.reviews);
+    set('pReviews', hasRating ? p.reviews : 0); set('pReviews2', hasRating ? p.reviews : 0);
     set('pZone', p.zone);
     set('pRate', rateMain); set('pRateAside', rateMain);
     set('pRateConv', convStr);
-    set('pBio', en ? p.bio_en : p.bio_fr);
+    set('pBio', (en ? p.bio_en : p.bio_fr) || (en ? 'No description yet.' : 'Pas encore de présentation.'));
     document.getElementById('pLangTag').textContent = en ? 'EN' : 'FR';
     set('pDispoAside', p.dispo);
     set('pSecure', t('p_secure_long'));
@@ -367,17 +387,19 @@
     }).join('');
 
     // Périodes
-    document.getElementById('pPeriods').innerHTML = p.periods.map(function (pr) {
+    var periods = p.periods || [];
+    document.getElementById('pPeriods').innerHTML = periods.length ? periods.map(function (pr) {
       var badge = pr.open
         ? '<span class="pill pill-green"><span class="dot"></span>' + esc(pr.status) + '</span>'
         : '<span class="pill pill-gray">' + esc(pr.status) + '</span>';
       return '<div style="display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid var(--fill)">' +
         '<div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:var(--font-title);font-weight:600;font-size:16px;color:var(--navy)">' + esc(pr.dates) + '</span><span style="font-size:14px;color:var(--muted)">' + esc(pr.type) + '</span></div>' +
         badge + '</div>';
-    }).join('');
+    }).join('') : '<p style="margin:0;color:var(--muted);font-size:15px">' + (en ? 'Contact via AkwabaIA for availability.' : 'Contactez via AkwabaIA pour connaître les disponibilités.') + '</p>';
 
     // Avis
-    document.getElementById('pReviewList').innerHTML = p.reviewsList.map(function (r) {
+    var reviewsList = p.reviewsList || [];
+    document.getElementById('pReviewList').innerHTML = reviewsList.length ? reviewsList.map(function (r) {
       return '<div style="padding:16px 0;border-top:1px solid var(--fill);display:flex;gap:12px">' +
         '<span style="width:40px;height:40px;flex:none;border-radius:50%;background:var(--fill-blue);color:var(--navy);font-family:var(--font-title);font-weight:600;font-size:14px;line-height:40px;text-align:center">' + esc(r.initials) + '</span>' +
         '<div style="min-width:0;display:flex;flex-direction:column;gap:4px">' +
@@ -385,7 +407,7 @@
           '<span class="stars" style="font-size:14px">★★★★★</span>' +
           '<p style="margin:2px 0 0;font-size:15px;line-height:1.55;color:var(--ink)">' + esc(r.text) + '</p>' +
         '</div></div>';
-    }).join('');
+    }).join('') : '<p style="margin:8px 0 0;color:var(--muted);font-size:15px">' + (en ? 'No reviews yet.' : 'Pas encore d\'avis.') + '</p>';
 
     // Boutons contact -> page besoin, en passant le prestataire (futur lead)
     var href = 'besoin.html?presta=' + encodeURIComponent(p.id);
