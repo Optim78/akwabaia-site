@@ -9,6 +9,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/connect.css">
+<style>
+  .chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;
+    border:1.5px solid var(--line-strong);background:#fff;color:var(--navy);font-family:var(--font-body);
+    font-weight:700;font-size:14px;cursor:pointer;transition:.12s}
+  .chip:hover{border-color:var(--navy)}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:var(--fill);border-radius:14px;padding:4px}
+  .seg button{min-height:46px;border:none;border-radius:11px;background:transparent;color:var(--muted);
+    font-family:var(--font-body);font-weight:700;font-size:14px;cursor:pointer}
+  .seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(15,27,45,.12)}
+  fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+  legend{display:flex;align-items:center;gap:10px;padding:0;margin-bottom:4px;font-family:var(--font-title);
+    font-weight:600;font-size:19px;color:var(--navy)}
+  legend .n{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;
+    font-weight:600;font-size:14px;line-height:28px;text-align:center}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px 20px}
+</style>
 </head>
 <body>
 
@@ -39,28 +56,66 @@
   <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px);align-items:flex-start">
 
     <aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:14px">
-      <span class="kicker kicker-green" data-i18n="ins_tag">Inscription prestataire</span>
-      <h1 style="font-size:clamp(26px,4vw,40px);line-height:1.18" data-i18n="ins_title">Rejoignez le vivier AkwabaIA Connect</h1>
-      <p class="lead" data-i18n="ins_sub">Créez votre profil gratuitement. Nous le vérifions, puis les entreprises peuvent vous contacter via AkwabaIA.</p>
-
+      <span class="kicker kicker-green">Inscription prestataire</span>
+      <h1 style="font-size:clamp(26px,4vw,40px);line-height:1.18">Rejoignez le vivier AkwabaIA Connect</h1>
+      <p class="lead">Créez votre profil gratuitement. Nous le vérifions, puis les entreprises peuvent vous contacter via AkwabaIA.</p>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:16px">
-        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">1</span><div><b style="color:var(--navy)" data-i18n="ins_s1_t">Vous remplissez ce formulaire</b><div style="font-size:14px;color:var(--muted);margin-top:2px" data-i18n="ins_s1_d">Environ 5 minutes.</div></div></div>
-        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">2</span><div><b style="color:var(--navy)" data-i18n="ins_s2_t">Nous vérifions votre profil</b><div style="font-size:14px;color:var(--muted);margin-top:2px" data-i18n="ins_s2_d">Identité et compétences.</div></div></div>
-        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">3</span><div><b style="color:var(--navy)" data-i18n="ins_s3_t">Vous recevez des demandes</b><div style="font-size:14px;color:var(--muted);margin-top:2px" data-i18n="ins_s3_d">Transmises par AkwabaIA.</div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">1</span><div><b style="color:var(--navy)">Vous remplissez ce formulaire</b><div style="font-size:14px;color:var(--muted);margin-top:2px">Environ 5 minutes.</div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">2</span><div><b style="color:var(--navy)">Nous vérifions votre profil</b><div style="font-size:14px;color:var(--muted);margin-top:2px">Identité et compétences.</div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:32px;height:32px;flex:none;border-radius:10px;background:var(--navy);color:var(--amber);font-family:var(--font-title);font-weight:700;font-size:15px;line-height:32px;text-align:center">3</span><div><b style="color:var(--navy)">Vous recevez des demandes</b><div style="font-size:14px;color:var(--muted);margin-top:2px">Transmises par AkwabaIA.</div></div></div>
       </div>
-
-      <div class="notice"><span>🔒</span><span data-i18n="ins_notice">Votre téléphone et votre email ne sont jamais affichés sur votre profil.</span></div>
+      <div class="notice"><span>🔒</span><span>Votre téléphone et votre email ne sont jamais affichés sur votre profil.</span></div>
     </aside>
 
     <div style="flex:2 1 560px;min-width:0">
-      <div class="card" style="padding:clamp(10px,1.5vw,16px)">
-        <iframe
-          class="airtable-embed"
-          src="https://airtable.com/embed/appVMl7KiG5L75keY/pagmWpQUxv85j1MtO/form"
-          frameborder="0" width="100%" height="900"
-          style="background:transparent;border-radius:14px"
-          title="Formulaire d'inscription prestataire"></iframe>
-      </div>
+      <form id="form" class="card" style="padding:clamp(18px,3.2vw,40px);display:flex;flex-direction:column;gap:30px" novalidate>
+
+        <fieldset>
+          <legend><span class="n">1</span>Vos informations</legend>
+          <div class="grid2">
+            <label class="field">Prénom<input name="prenom" placeholder="Aminata" required></label>
+            <label class="field">Nom<input name="nom" placeholder="Koné" required><span class="hint">Seule l'initiale sera affichée : « Aminata K. »</span></label>
+            <label class="field">Téléphone (WhatsApp)<input name="telephone" type="tel" placeholder="+225 07 00 00 00 00" required></label>
+            <label class="field">Email<input name="email" type="email" placeholder="vous@exemple.com" required></label>
+            <label class="field">Zone
+              <select name="zone" required>
+                <option value="">Choisir…</option>
+                <option>Abidjan</option><option>Intérieur CI</option><option>Autre pays</option><option>Télétravail (à distance)</option>
+              </select>
+            </label>
+            <label class="field">Tarif indicatif / jour (FCFA)<input name="tarif" type="number" placeholder="Ex. 15000"><span class="hint">Optionnel. Ajustable selon la mission.</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">2</span>Vos compétences</legend>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <span style="font-weight:700;font-size:14px;color:var(--navy)">Choisissez vos compétences (1 à 5)</span>
+            <div id="skills" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <span style="font-weight:700;font-size:14px;color:var(--navy)">Type de disponibilité principal</span>
+            <div class="seg" id="dispoType"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">3</span>Présentation</legend>
+          <label class="field">En français<textarea name="presentation_fr" rows="4" placeholder="Votre expérience, vos spécialités, les clients que vous aidez…" required></textarea></label>
+          <label class="field">In English <span class="hint" style="font-weight:400">(optionnel, recommandé)</span><textarea name="presentation_en" rows="3" placeholder="The same, in English."></textarea></label>
+          <label class="field">Photo de profil <span class="hint" style="font-weight:400">(optionnel)</span><input name="photo" type="file" accept="image/*"></label>
+        </fieldset>
+
+        <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--fill);padding-top:24px">
+          <label style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;color:var(--ink);cursor:pointer">
+            <input type="checkbox" id="consent" style="width:20px;height:20px;flex:none;margin-top:2px">
+            <span>J'accepte qu'AkwabaIA vérifie mon profil et me transmette les demandes de contact. Mes coordonnées ne seront jamais publiées.</span>
+          </label>
+          <div id="msg" style="display:none;font-size:15px;padding:12px 14px;border-radius:12px"></div>
+          <button type="submit" id="submit" class="btn btn-primary" style="max-width:380px">Envoyer mon inscription</button>
+        </div>
+
+      </form>
     </div>
 
   </div>
@@ -74,5 +129,88 @@
 </footer>
 
 <script src="assets/connect.js"></script>
+<script>
+(function () {
+  var ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-inscription';
+  var SKILLS = ['Réseau','Système & serveur','Helpdesk / poste de travail','Sécurité','Cloud / virtualisation','Téléphonie / VoIP','Développement / web'];
+  var DISPO = ['Temps plein','Soirs & weekends','Missions courtes (1-3 j)'];
+  var selectedSkills = [], dispoType = 'Soirs & weekends';
+
+  var skillsEl = document.getElementById('skills');
+  SKILLS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = s;
+    b.addEventListener('click', function () {
+      var i = selectedSkills.indexOf(s);
+      if (i > -1) { selectedSkills.splice(i, 1); b.classList.remove('on'); }
+      else if (selectedSkills.length < 5) { selectedSkills.push(s); b.classList.add('on'); }
+    });
+    skillsEl.appendChild(b);
+  });
+
+  var dispoEl = document.getElementById('dispoType');
+  DISPO.forEach(function (d) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = d; if (d === dispoType) b.classList.add('on');
+    b.addEventListener('click', function () {
+      dispoType = d;
+      Array.prototype.forEach.call(dispoEl.children, function (c) { c.classList.toggle('on', c === b); });
+    });
+    dispoEl.appendChild(b);
+  });
+
+  function showMsg(text, ok) {
+    var m = document.getElementById('msg');
+    m.style.display = 'block';
+    m.textContent = text;
+    m.style.background = ok ? 'var(--fill-green)' : '#FCEBEB';
+    m.style.color = ok ? 'var(--green-dark)' : '#A32D2D';
+  }
+
+  function readPhoto(file) {
+    return new Promise(function (resolve) {
+      if (!file) return resolve(null);
+      var r = new FileReader();
+      r.onload = function () { resolve({ filename: file.name, data: r.result }); };
+      r.onerror = function () { resolve(null); };
+      r.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target;
+    if (!f.prenom.value.trim() || !f.nom.value.trim() || !f.telephone.value.trim() || !f.email.value.trim() || !f.zone.value || !f.presentation_fr.value.trim()) {
+      return showMsg('Merci de remplir tous les champs obligatoires.', false);
+    }
+    if (!selectedSkills.length) return showMsg('Choisissez au moins une compétence.', false);
+    if (!document.getElementById('consent').checked) return showMsg('Merci d\'accepter les conditions.', false);
+
+    var btn = document.getElementById('submit');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+
+    readPhoto(f.photo.files[0]).then(function (photo) {
+      var payload = {
+        prenom: f.prenom.value.trim(), nom: f.nom.value.trim(),
+        telephone: f.telephone.value.trim(), email: f.email.value.trim(),
+        zone: f.zone.value, tarif: f.tarif.value ? Number(f.tarif.value) : null,
+        competences: selectedSkills, typeDispo: dispoType,
+        presentationFr: f.presentation_fr.value.trim(), presentationEn: f.presentation_en.value.trim(),
+        photo: photo
+      };
+      return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      f.reset(); selectedSkills = [];
+      Array.prototype.forEach.call(skillsEl.children, function (c) { c.classList.remove('on'); });
+      showMsg('✅ Merci ! Votre inscription a bien été envoyée. Nous vérifions votre profil puis il apparaîtra dans l\'annuaire.', true);
+      btn.style.display = 'none';
+    }).catch(function () {
+      showMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
+      btn.disabled = false; btn.textContent = 'Envoyer mon inscription';
+    });
+  });
+})();
+</script>
 </body>
 </html>
