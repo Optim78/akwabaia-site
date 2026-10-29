@@ -53,7 +53,17 @@
 </header>
 
 <div class="wrap" style="padding-top:clamp(22px,4vw,56px);padding-bottom:clamp(32px,5vw,72px)">
-  <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px);align-items:flex-start">
+  <div id="done" style="display:none;text-align:center;max-width:580px;margin:0 auto;padding:clamp(20px,5vw,56px) 0">
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--fill-green);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:30px;font-weight:700">✓</div>
+    <h1 style="font-size:clamp(24px,4vw,32px);margin-top:20px">Votre profil est créé 🎉</h1>
+    <p class="lead" style="margin-top:12px">Il apparaît déjà dans l'annuaire (statut « à vérifier »). Vous allez recevoir par email votre <b>lien personnel</b> pour gérer votre profil et vos disponibilités à tout moment.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px">
+      <a href="annuaire.html" class="btn btn-primary">Voir l'annuaire</a>
+      <a href="index.html" class="btn btn-ghost">Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <div id="formWrap" style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px);align-items:flex-start">
 
     <aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:14px">
       <span class="kicker kicker-green">Inscription prestataire</span>
@@ -213,10 +223,9 @@
       return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      f.reset(); selectedSkills = [];
-      Array.prototype.forEach.call(skillsEl.children, function (c) { c.classList.remove('on'); });
-      showMsg('✅ Merci ! Votre inscription a bien été envoyée. Nous vérifions votre profil puis il apparaîtra dans l\'annuaire.', true);
-      btn.style.display = 'none';
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('done').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }).catch(function () {
       showMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
       btn.disabled = false; btn.textContent = 'Envoyer mon inscription';
