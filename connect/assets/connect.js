@@ -292,10 +292,13 @@
     var nextPeriod = (p.periods && p.periods.length) ? p.periods[0].dates : '';
     var dispoBlock = '<span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' + dispoPill +
       (nextPeriod ? '<span style="font-size:13px;color:var(--muted);white-space:nowrap">' + esc(nextPeriod) + '</span>' : '') + '</span>';
+    var avatar = p.photo
+      ? '<div style="width:68px;height:68px;flex:none;border-radius:14px;background:#EEF1F5 center/cover no-repeat url(\'' + encodeURI(p.photo) + '\')"></div>'
+      : '<div style="width:68px;height:68px;flex:none;border-radius:14px;background:repeating-linear-gradient(135deg,#DDE3EA 0 6px,#E9EDF2 6px 12px)"></div>';
     return '' +
       '<a href="profil.html?id=' + encodeURIComponent(p.id) + '" style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(15,27,45,.04)">' +
         '<div style="display:flex;gap:14px;align-items:flex-start">' +
-          '<div style="width:68px;height:68px;flex:none;border-radius:14px;background:repeating-linear-gradient(135deg,#DDE3EA 0 6px,#E9EDF2 6px 12px)"></div>' +
+          avatar +
           '<div style="min-width:0;display:flex;flex-direction:column;gap:6px">' +
             '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
               '<span style="font-family:var(--font-title);font-weight:600;font-size:17px;color:var(--navy)">' + esc(p.name) + '</span>' +
@@ -399,6 +402,10 @@
     set('pRate', rateMain); set('pRateAside', rateMain);
     set('pRateConv', convStr);
     set('pBio', (en ? p.bio_en : p.bio_fr) || (en ? 'No description yet.' : 'Pas encore de présentation.'));
+    var photoEl = document.getElementById('pPhoto');
+    if (photoEl) photoEl.style.background = p.photo
+      ? "#EEF1F5 center/cover no-repeat url('" + encodeURI(p.photo) + "')"
+      : "repeating-linear-gradient(135deg,#DDE3EA 0 7px,#E9EDF2 7px 14px)";
     document.getElementById('pLangTag').textContent = en ? 'EN' : 'FR';
     set('pDispoAside', p.dispo);
     set('pSecure', t('p_secure_long'));
