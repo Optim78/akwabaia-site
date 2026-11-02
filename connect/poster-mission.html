@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poster une mission — AkwabaIA Connect</title>
+<meta name="description" content="Vous cherchez un technicien IT en Côte d'Ivoire ? Publiez votre mission gratuitement. AkwabaIA vous met en relation avec des prestataires disponibles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/connect.css">
+<style>
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line-strong);background:#fff;border-radius:999px;padding:9px 14px;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;min-height:40px}
+  .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px 20px}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">A</span>
+      <span class="brand-name"><b>Akwaba<i>IA</i></b><small>Connect</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html#comment" data-i18n="nav_how">Comment ça marche</a>
+      <a href="annuaire.html" data-i18n="nav_directory">Annuaire</a>
+      <a href="missions.html">Missions</a>
+      <a href="inscription.html" data-i18n="nav_become">Devenir prestataire</a>
+      <a href="https://akwabaia.com">akwabaia.com</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang" id="langToggle">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a class="header-cta" href="missions.html">Voir les missions</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:clamp(22px,4vw,56px);padding-bottom:clamp(32px,5vw,72px);max-width:760px">
+
+  <div id="done" style="display:none;text-align:center;max-width:580px;margin:0 auto;padding:clamp(20px,5vw,56px) 0">
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--fill-green);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:30px;font-weight:700">✓</div>
+    <h1 style="font-size:clamp(24px,4vw,32px);margin-top:20px">Mission reçue 🎉</h1>
+    <p class="lead" style="margin-top:12px">Merci ! Votre mission sera publiée après une rapide vérification par AkwabaIA. Les prestataires intéressés nous contacteront, et nous ferons la mise en relation. Vos coordonnées ne sont jamais affichées publiquement.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px">
+      <a href="missions.html" class="btn btn-primary">Voir les missions</a>
+      <a href="index.html" class="btn btn-ghost">Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <div id="formWrap">
+    <span class="kicker kicker-green">Déposer une demande</span>
+    <h1 style="font-size:clamp(24px,4vw,34px);margin-top:12px">Poster une mission</h1>
+    <p class="lead" style="margin-top:8px">Décrivez ce dont vous avez besoin. C'est gratuit. AkwabaIA vérifie, publie, et vous met en relation avec un technicien disponible.</p>
+
+    <form id="form" class="card" style="margin-top:22px;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:24px">
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <label class="field">Titre de la mission *<input name="titre" required placeholder="Ex. Réparer l'écran d'un PC portable"></label>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-weight:700;font-size:14px;color:var(--navy)">Compétence(s) concernée(s)</span>
+          <div class="chips" id="skills">
+            <button type="button" class="chip">Réseau</button>
+            <button type="button" class="chip">Système &amp; serveur</button>
+            <button type="button" class="chip">Helpdesk / poste de travail</button>
+            <button type="button" class="chip">Sécurité</button>
+            <button type="button" class="chip">Cloud / virtualisation</button>
+            <button type="button" class="chip">Téléphonie / VoIP</button>
+            <button type="button" class="chip">Développement / web</button>
+          </div>
+        </div>
+        <label class="field">Description *<textarea name="description" rows="4" required placeholder="Expliquez la mission : ce qu'il faut faire, le matériel, le lieu…"></textarea></label>
+      </div>
+
+      <div class="grid2">
+        <label class="field">Zone
+          <select name="zone">
+            <option>Abidjan</option><option>Intérieur CI</option><option>Autre pays</option><option>Télétravail (à distance)</option>
+          </select>
+        </label>
+        <label class="field">Durée<input name="duree" placeholder="Ex. 1 jour, 1 semaine, ponctuel"></label>
+        <label class="field">Budget indicatif (FCFA)<input name="budget" type="number" placeholder="Ex. 20000"></label>
+        <label class="field">Date limite<input name="dateLimite" type="date"></label>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--fill);padding-top:22px">
+        <span style="font-weight:700;font-size:15px;color:var(--navy)">Vos coordonnées (privées, jamais affichées)</span>
+        <div class="grid2">
+          <label class="field">Votre nom *<input name="nom" required placeholder="Nom et prénom"></label>
+          <label class="field">Téléphone (WhatsApp) *<input name="telephone" required placeholder="+225 07 00 00 00 00"></label>
+        </div>
+        <label class="field">Email (optionnel)<input name="email" type="email" placeholder="vous@email.com"></label>
+      </div>
+
+      <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink);line-height:1.5">
+        <input type="checkbox" id="consent" style="margin-top:3px">
+        <span>J'autorise AkwabaIA à utiliser ces informations pour traiter ma demande et me mettre en relation avec des prestataires. Mes coordonnées ne seront jamais publiées.</span>
+      </label>
+
+      <div id="msg" style="display:none;font-size:15px;padding:12px 14px;border-radius:12px"></div>
+      <button type="submit" id="submit" class="btn btn-primary" style="max-width:420px">Envoyer ma mission</button>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+  </div>
+</footer>
+
+<script src="assets/connect.js"></script>
+<script>
+(function () {
+  var ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-mission-nouvelle';
+  var selected = [];
+  var skillsEl = document.getElementById('skills');
+
+  Array.prototype.forEach.call(skillsEl.children, function (c) {
+    c.addEventListener('click', function () {
+      c.classList.toggle('on');
+      var name = c.textContent.trim();
+      var i = selected.indexOf(name);
+      if (i === -1 && c.classList.contains('on')) selected.push(name);
+      else if (i !== -1 && !c.classList.contains('on')) selected.splice(i, 1);
+    });
+  });
+
+  function showMsg(txt, ok) {
+    var m = document.getElementById('msg');
+    m.style.display = 'block'; m.textContent = txt;
+    m.style.background = ok ? 'var(--fill-green)' : '#FCEBEB';
+    m.style.color = ok ? 'var(--green-dark)' : '#A32D2D';
+  }
+
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target;
+    if (!f.titre.value.trim() || !f.description.value.trim()) return showMsg('Indiquez au moins le titre et la description.', false);
+    if (!f.nom.value.trim() || !f.telephone.value.trim()) return showMsg('Indiquez votre nom et votre téléphone.', false);
+    if (!document.getElementById('consent').checked) return showMsg('Merci d\'accepter les conditions.', false);
+
+    var btn = document.getElementById('submit');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+
+    var payload = {
+      titre: f.titre.value.trim(),
+      competences: selected,
+      description: f.description.value.trim(),
+      zone: f.zone.value,
+      duree: f.duree.value.trim(),
+      budget: f.budget.value ? Number(f.budget.value) : null,
+      dateLimite: f.dateLimite.value || null,
+      nom: f.nom.value.trim(),
+      telephone: f.telephone.value.trim(),
+      email: f.email.value.trim()
+    };
+
+    fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(function () {
+        document.getElementById('formWrap').style.display = 'none';
+        document.getElementById('done').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function () {
+        showMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
+        btn.disabled = false; btn.textContent = 'Envoyer ma mission';
+      });
+  });
+})();
+</script>
+</body>
+</html>

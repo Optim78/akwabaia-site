@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Missions IT — AkwabaIA Connect</title>
+<meta name="description" content="Missions IT de courte durée à pourvoir en Côte d'Ivoire : dépannage, réseau, serveurs, développement. Positionnez-vous via AkwabaIA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/connect.css">
+<style>
+  .m-card{display:flex;flex-direction:column;gap:12px;height:100%}
+  .m-desc{font-size:14.5px;line-height:1.55;color:var(--ink);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .m-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;color:var(--muted)}
+  .m-meta b{color:var(--navy);font-weight:600}
+  .m-budget{font-family:var(--font-title);font-weight:700;color:var(--green-dark);font-size:17px}
+  .ov{position:fixed;inset:0;background:rgba(15,27,45,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+  .ov.on{display:flex}
+  .ov-card{background:#fff;border-radius:18px;max-width:440px;width:100%;padding:clamp(20px,3vw,30px);max-height:92vh;overflow:auto}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">A</span>
+      <span class="brand-name"><b>Akwaba<i>IA</i></b><small>Connect</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html#comment" data-i18n="nav_how">Comment ça marche</a>
+      <a href="annuaire.html" data-i18n="nav_directory">Annuaire</a>
+      <a href="missions.html">Missions</a>
+      <a href="inscription.html" data-i18n="nav_become">Devenir prestataire</a>
+      <a href="https://akwabaia.com">akwabaia.com</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang" id="langToggle">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a class="header-cta" href="poster-mission.html">Poster une mission</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== EN-TÊTE + FILTRES ===== -->
+<section style="background:#fff;border-bottom:1px solid var(--line);padding:clamp(22px,4vw,48px) 0 clamp(18px,3vw,32px)">
+  <div class="wrap">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:space-between">
+      <div style="flex:1 1 320px;min-width:0">
+        <span class="kicker kicker-green">Offres de mission</span>
+        <h1 style="font-size:clamp(25px,4vw,40px);margin-top:10px">Missions IT à pourvoir</h1>
+        <p class="lead" style="margin-top:8px">Des missions courtes ou ponctuelles. Positionnez-vous, AkwabaIA fait la mise en relation.</p>
+      </div>
+      <a href="poster-mission.html" class="btn btn-primary" style="align-self:center">+ Poster une mission</a>
+    </div>
+
+    <div style="margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;align-items:end">
+      <label class="field"><span>Compétence</span>
+        <select id="fSkill">
+          <option value="">Toutes</option>
+          <option>Réseau</option><option>Système &amp; serveur</option><option>Helpdesk / poste de travail</option>
+          <option>Sécurité</option><option>Cloud / virtualisation</option><option>Téléphonie / VoIP</option>
+          <option>Développement / web</option>
+        </select>
+      </label>
+      <label class="field"><span>Zone</span>
+        <select id="fZone">
+          <option value="">Toutes</option>
+          <option>Abidjan</option><option>Intérieur CI</option><option>Autre pays</option>
+          <option>Télétravail (à distance)</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LISTE ===== -->
+<section style="padding:clamp(18px,3vw,36px) 0 clamp(40px,5vw,72px)">
+  <div class="wrap">
+    <span style="font-weight:600;font-size:15px;color:var(--navy)"><b id="count" style="font-family:var(--font-title)">0</b> mission(s)</span>
+
+    <div class="notice" style="margin-top:12px">
+      <span>🔒</span>
+      <span>Les coordonnées du demandeur ne sont jamais affichées. Cliquez « Je suis intéressé » : AkwabaIA vous met en relation.</span>
+    </div>
+
+    <div id="grid" style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(12px,1.8vw,20px)"></div>
+    <p id="loading" style="text-align:center;color:var(--muted);margin-top:28px">Chargement des missions…</p>
+    <p id="empty" style="display:none;text-align:center;color:var(--muted);margin-top:32px">Aucune mission ouverte pour le moment. Revenez bientôt, ou <a href="inscription.html" class="link-underline">inscrivez-vous</a> pour être notifié.</p>
+  </div>
+</section>
+
+<!-- ===== MODALE « Je suis intéressé » ===== -->
+<div class="ov" id="ov">
+  <div class="ov-card">
+    <div id="ovForm">
+      <h2 style="font-size:20px">Je suis intéressé</h2>
+      <p class="lead" style="margin:6px 0 16px;font-size:15px">Mission : <b id="ovMission" style="color:var(--navy)"></b></p>
+      <form id="interest" style="display:flex;flex-direction:column;gap:14px">
+        <label class="field">Votre nom<input name="nom" required placeholder="Ex. Koné Ibrahim"></label>
+        <label class="field">Votre téléphone (WhatsApp)<input name="telephone" required placeholder="+225 07 00 00 00 00"></label>
+        <label class="field">Message (optionnel)<textarea name="message" rows="3" placeholder="Votre disponibilité, votre expérience utile…"></textarea></label>
+        <div id="ovMsg" style="display:none;font-size:14px;padding:10px 12px;border-radius:10px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button type="submit" id="ovSubmit" class="btn btn-primary" style="flex:1 1 auto">Envoyer</button>
+          <button type="button" id="ovCancel" class="btn btn-ghost">Annuler</button>
+        </div>
+      </form>
+    </div>
+    <div id="ovDone" style="display:none;text-align:center;padding:10px 0">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--fill-green);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:26px;font-weight:700">✓</div>
+      <h2 style="font-size:20px;margin-top:14px">C'est envoyé 🎉</h2>
+      <p class="lead" style="margin-top:8px;font-size:15px">AkwabaIA a bien reçu votre intérêt pour cette mission. Nous revenons vers vous très vite.</p>
+      <button type="button" class="btn btn-primary" id="ovClose" style="margin-top:16px">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+  </div>
+</footer>
+
+<script src="assets/connect.js"></script>
+<script>
+(function () {
+  var MISSIONS_ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-missions';
+  var INTEREST_ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-interesse';
+  var EUR_PER_FCFA = 1 / 655.957;
+
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]); }); }
+  function fmtFCFA(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+  function budgetLabel(n){
+    if (!(typeof n === 'number' && n > 0)) return '';
+    var eur = Math.round(n * EUR_PER_FCFA);
+    return fmtFCFA(n) + ' FCFA <span style="font-weight:400;color:var(--muted);font-size:13px">(~' + eur + ' €)</span>';
+  }
+
+  var ALL = [];
+  var grid = document.getElementById('grid');
+  var fSkill = document.getElementById('fSkill');
+  var fZone = document.getElementById('fZone');
+
+  function card(m){
+    var tags = (m.skills || []).slice(0,3).map(function(s){ return '<span class="tag">' + esc(s) + '</span>'; }).join('');
+    var meta = [];
+    if (m.zone) meta.push('<span>📍 <b>' + esc(m.zone) + '</b></span>');
+    if (m.duree) meta.push('<span>⏱ ' + esc(m.duree) + '</span>');
+    if (m.dateLimiteLabel) meta.push('<span>Avant le <b>' + esc(m.dateLimiteLabel) + '</b></span>');
+    var budget = budgetLabel(m.budget);
+    var origin = (m.postedBy === 'Admin')
+      ? '<span class="pill pill-green"><span class="dot"></span>Proposé par AkwabaIA</span>'
+      : '<span class="pill">Mission publique</span>';
+    return '<article class="card m-card">' +
+      '<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">' +
+        '<h3 style="font-size:18px;line-height:1.3">' + esc(m.title) + '</h3>' + origin + '</div>' +
+      (tags ? '<div style="display:flex;flex-wrap:wrap;gap:6px">' + tags + '</div>' : '') +
+      (m.description ? '<p class="m-desc">' + esc(m.description) + '</p>' : '') +
+      (meta.length ? '<div class="m-meta">' + meta.join('') + '</div>' : '') +
+      (budget ? '<div class="m-budget">' + budget + '</div>' : '') +
+      '<button class="btn btn-primary js-int" data-id="' + esc(m.id) + '" data-title="' + esc(m.title) + '" style="margin-top:auto">Je suis intéressé</button>' +
+      '</article>';
+  }
+
+  function render(){
+    var sk = fSkill.value, zo = fZone.value;
+    var list = ALL.filter(function(m){
+      if (sk && (m.skills || []).indexOf(sk) === -1) return false;
+      if (zo && m.zone !== zo) return false;
+      return true;
+    });
+    document.getElementById('count').textContent = list.length;
+    grid.innerHTML = list.map(card).join('');
+    document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+    Array.prototype.forEach.call(document.querySelectorAll('.js-int'), function(b){
+      b.addEventListener('click', function(){ openModal(b.getAttribute('data-id'), b.getAttribute('data-title')); });
+    });
+  }
+
+  fSkill.addEventListener('change', render);
+  fZone.addEventListener('change', render);
+
+  fetch(MISSIONS_ENDPOINT)
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(data){
+      ALL = Array.isArray(data) ? data : (data && data.missions) || [];
+      document.getElementById('loading').style.display = 'none';
+      render();
+    })
+    .catch(function(e){
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('empty').style.display = 'block';
+      if (typeof console !== 'undefined') console.warn('Missions : ', e.message);
+    });
+
+  /* ---- Modale ---- */
+  var ov = document.getElementById('ov');
+  var ovMission = document.getElementById('ovMission');
+  var form = document.getElementById('interest');
+  var currentId = '', currentTitle = '';
+
+  function openModal(id, title){
+    currentId = id; currentTitle = title;
+    ovMission.textContent = title;
+    document.getElementById('ovForm').style.display = 'block';
+    document.getElementById('ovDone').style.display = 'none';
+    document.getElementById('ovMsg').style.display = 'none';
+    form.reset();
+    ov.classList.add('on');
+  }
+  function closeModal(){ ov.classList.remove('on'); }
+  document.getElementById('ovCancel').addEventListener('click', closeModal);
+  document.getElementById('ovClose').addEventListener('click', closeModal);
+  ov.addEventListener('click', function(e){ if (e.target === ov) closeModal(); });
+
+  function showOvMsg(txt, ok){
+    var m = document.getElementById('ovMsg');
+    m.style.display = 'block'; m.textContent = txt;
+    m.style.background = ok ? 'var(--fill-green)' : '#FCEBEB';
+    m.style.color = ok ? 'var(--green-dark)' : '#A32D2D';
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = e.target;
+    if (!f.nom.value.trim() || !f.telephone.value.trim()) return showOvMsg('Indiquez votre nom et votre téléphone.', false);
+    var btn = document.getElementById('ovSubmit');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    fetch(INTEREST_ENDPOINT, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        missionId: currentId,
+        missionTitle: currentTitle,
+        nom: f.nom.value.trim(),
+        telephone: f.telephone.value.trim(),
+        message: f.message.value.trim()
+      })
+    })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(){
+      document.getElementById('ovForm').style.display = 'none';
+      document.getElementById('ovDone').style.display = 'block';
+    })
+    .catch(function(){
+      showOvMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
+      btn.disabled = false; btn.textContent = 'Envoyer';
+    });
+  });
+})();
+</script>
+</body>
+</html>
