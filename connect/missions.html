@@ -70,7 +70,7 @@
       <label class="field"><span>Zone</span>
         <select id="fZone">
           <option value="">Toutes</option>
-          <option>Abidjan</option><option>Intérieur CI</option><option>Autre pays</option>
+          <option value="Abidjan">Abidjan (toutes communes)</option><option>Abobo</option><option>Adjamé</option><option>Anyama</option><option>Attécoubé</option><option>Bingerville</option><option>Cocody</option><option>Koumassi</option><option>Marcory</option><option>Plateau</option><option>Port-Bouët</option><option>Songon</option><option>Treichville</option><option>Yopougon</option><option>Intérieur CI</option><option>Autre pays</option>
           <option>Télétravail (à distance)</option>
         </select>
       </label>
@@ -142,6 +142,7 @@
     return fmtFCFA(n) + ' FCFA <span style="font-weight:400;color:var(--muted);font-size:13px">(~' + eur + ' €)</span>';
   }
 
+  var ABIDJAN_COMMUNES = ['Abobo','Adjamé','Anyama','Attécoubé','Bingerville','Cocody','Koumassi','Marcory','Plateau','Port-Bouët','Songon','Treichville','Yopougon'];
   var ALL = [];
   var grid = document.getElementById('grid');
   var fSkill = document.getElementById('fSkill');
@@ -172,7 +173,10 @@
     var sk = fSkill.value, zo = fZone.value;
     var list = ALL.filter(function(m){
       if (sk && (m.skills || []).indexOf(sk) === -1) return false;
-      if (zo && m.zone !== zo) return false;
+      if (zo) {
+        if (zo === 'Abidjan') { if (m.zone !== 'Abidjan' && ABIDJAN_COMMUNES.indexOf(m.zone) === -1) return false; }
+        else if (m.zone !== zo) return false;
+      }
       return true;
     });
     document.getElementById('count').textContent = list.length;
