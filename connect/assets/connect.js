@@ -452,10 +452,13 @@
         '</div></div>';
     }).join('') : '<p style="margin:8px 0 0;color:var(--muted);font-size:15px">' + (en ? 'No reviews yet.' : 'Pas encore d\'avis.') + '</p>';
 
-    // Boutons contact -> page besoin, en passant le prestataire (futur lead)
-    var href = 'besoin.html?presta=' + encodeURIComponent(p.id);
-    var ca = document.getElementById('pContactAside'); if (ca) ca.href = href;
-    var cm = document.getElementById('pContactMobile'); if (cm) cm.href = href;
+    // Bouton contact -> WhatsApp AkwabaIA, pré-rempli avec le prestataire (AkwabaIA fait l'intermédiaire)
+    var waText = (en
+      ? 'Hello AkwabaIA 👋 I would like to contact the provider ' + p.name + ' for an IT mission.'
+      : 'Bonjour AkwabaIA 👋 Je souhaite contacter le prestataire ' + p.name + ' pour une mission IT.');
+    var href = 'https://wa.me/2250778627460?text=' + encodeURIComponent(waText);
+    var ca = document.getElementById('pContactAside'); if (ca) { ca.href = href; ca.target = '_blank'; ca.rel = 'noopener'; }
+    var cm = document.getElementById('pContactMobile'); if (cm) { cm.href = href; cm.target = '_blank'; cm.rel = 'noopener'; }
 
     // Aside visible seulement sur desktop
     var aside = document.getElementById('pAside');
