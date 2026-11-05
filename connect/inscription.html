@@ -190,10 +190,31 @@
   function readPhoto(file) {
     return new Promise(function (resolve) {
       if (!file) return resolve(null);
-      var r = new FileReader();
-      r.onload = function () { resolve({ filename: file.name, data: r.result }); };
-      r.onerror = function () { resolve(null); };
-      r.readAsDataURL(file);
+      var reader = new FileReader();
+      reader.onerror = function () { resolve(null); };
+      reader.onload = function () {
+        var img = new Image();
+        img.onerror = function () { resolve(null); };
+        img.onload = function () {
+          try {
+            var max = 1000, w = img.width, h = img.height;
+            if (w > max || h > max) {
+              if (w >= h) { h = Math.round(h * max / w); w = max; }
+              else { w = Math.round(w * max / h); h = max; }
+            }
+            var c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            var data = c.toDataURL('image/jpeg', 0.82);
+            var name = (file.name || 'photo').replace(/\.[^.]+$/, '') + '.jpg';
+            resolve({ filename: name, data: data });
+          } catch (err) {
+            resolve({ filename: file.name, data: reader.result });
+          }
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
     });
   }
 
@@ -223,12 +244,17 @@
       };
       return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     }).then(function (r) {
+      if (r.status === 409) { var err = new Error('EMAIL'); err.code = 'EMAIL'; throw err; }
       if (!r.ok) throw new Error('HTTP ' + r.status);
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('done').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }).catch(function () {
-      showMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
+    }).catch(function (e) {
+      if (e && e.code === 'EMAIL') {
+        showMsg('Cette adresse email est déjà utilisée pour un profil. Si c\'est le vôtre, utilisez le lien personnel reçu par email lors de votre inscription, ou contactez-nous sur WhatsApp.', false);
+      } else {
+        showMsg('Une erreur est survenue. Réessayez, ou contactez-nous sur WhatsApp.', false);
+      }
       btn.disabled = false; btn.textContent = 'Envoyer mon inscription';
     });
   });
