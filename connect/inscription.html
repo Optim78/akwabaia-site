@@ -81,6 +81,8 @@
     <div style="flex:2 1 560px;min-width:0">
       <form id="form" class="card" style="padding:clamp(18px,3.2vw,40px);display:flex;flex-direction:column;gap:30px" novalidate>
 
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+
         <fieldset>
           <legend><span class="n">1</span>Vos informations</legend>
           <div class="grid2">
@@ -144,7 +146,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
-    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC · <a href="confidentialite.html" style="color:inherit">Confidentialité</a></span>
   </div>
 </footer>
 
@@ -221,6 +223,7 @@
   document.getElementById('form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = e.target;
+    if (f.website && f.website.value) return;
     if (!f.prenom.value.trim() || !f.nom.value.trim() || !f.telephone.value.trim() || !f.email.value.trim() || !f.zone.value || !f.presentation_fr.value.trim()) {
       return showMsg('Merci de remplir tous les champs obligatoires.', false);
     }
@@ -234,6 +237,7 @@
 
     readPhoto(f.photo.files[0]).then(function (photo) {
       var payload = {
+        website: f.website.value,
         prenom: f.prenom.value.trim(), nom: f.nom.value.trim(),
         telephone: f.telephone.value.trim(), email: f.email.value.trim(),
         zone: f.zone.value, tarif: f.tarif.value ? Number(f.tarif.value) : null,

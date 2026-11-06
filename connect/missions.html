@@ -90,7 +90,7 @@
 <!-- ===== LISTE ===== -->
 <section style="padding:clamp(18px,3vw,36px) 0 clamp(40px,5vw,72px)">
   <div class="wrap">
-    <span style="font-weight:600;font-size:15px;color:var(--navy)"><b id="count" style="font-family:var(--font-title)">0</b> mission(s)</span>
+    <span style="font-weight:600;font-size:15px;color:var(--navy)">Missions vérifiées par AkwabaIA avant publication</span>
 
     <div class="notice" style="margin-top:12px">
       <span>🔒</span>
@@ -110,6 +110,7 @@
       <h2 style="font-size:20px">Je suis intéressé</h2>
       <p class="lead" style="margin:6px 0 16px;font-size:15px">Mission : <b id="ovMission" style="color:var(--navy)"></b></p>
       <form id="interest" style="display:flex;flex-direction:column;gap:14px">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <label class="field">Votre nom<input name="nom" required placeholder="Ex. Koné Ibrahim"></label>
         <label class="field">Votre téléphone (WhatsApp)<input name="telephone" required placeholder="+225 07 00 00 00 00"></label>
         <label class="field">Message (optionnel)<textarea name="message" rows="3" placeholder="Votre disponibilité, votre expérience utile…"></textarea></label>
@@ -132,7 +133,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
-    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC · <a href="confidentialite.html" style="color:inherit">Confidentialité</a></span>
   </div>
 </footer>
 
@@ -188,7 +189,7 @@
       }
       return true;
     });
-    document.getElementById('count').textContent = list.length;
+    var ce = document.getElementById('count'); if (ce) ce.textContent = list.length;
     grid.innerHTML = list.map(card).join('');
     document.getElementById('empty').style.display = list.length ? 'none' : 'block';
     Array.prototype.forEach.call(document.querySelectorAll('.js-int'), function(b){
@@ -208,7 +209,9 @@
     })
     .catch(function(e){
       document.getElementById('loading').style.display = 'none';
-      document.getElementById('empty').style.display = 'block';
+      var em = document.getElementById('empty');
+      em.style.display = 'block';
+      em.innerHTML = 'Service momentanément indisponible. Écrivez-nous sur <a href="https://wa.me/2250778627460" target="_blank" rel="noopener" style="color:var(--green-dark);font-weight:700">WhatsApp</a>, on vous répond vite.';
       if (typeof console !== 'undefined') console.warn('Missions : ', e.message);
     });
 
@@ -242,12 +245,14 @@
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var f = e.target;
+    if (f.website && f.website.value) return;
     if (!f.nom.value.trim() || !f.telephone.value.trim()) return showOvMsg('Indiquez votre nom et votre téléphone.', false);
     var btn = document.getElementById('ovSubmit');
     btn.disabled = true; btn.textContent = 'Envoi…';
     fetch(INTEREST_ENDPOINT, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        website: f.website.value,
         missionId: currentId,
         missionTitle: currentTitle,
         nom: f.nom.value.trim(),

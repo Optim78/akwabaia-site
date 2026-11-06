@@ -75,6 +75,8 @@
 
     <form id="form" class="card" style="margin-top:14px;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:24px">
 
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+
       <div style="display:flex;flex-direction:column;gap:16px">
         <label class="field">Titre de la mission *<input name="titre" required placeholder="Ex. Réparer l'écran d'un PC portable"></label>
         <div style="display:flex;flex-direction:column;gap:9px">
@@ -126,7 +128,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span class="fbrand">Akwaba<i>IA</i> <span>· Le bon IT</span></span>
-    <span>© 2026 AkwabaIA · Spécialiste des TIC</span>
+    <span>© 2026 AkwabaIA · Spécialiste des TIC · <a href="confidentialite.html" style="color:inherit">Confidentialité</a></span>
   </div>
 </footer>
 
@@ -157,6 +159,7 @@
   document.getElementById('form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = e.target;
+    if (f.website && f.website.value) return;
     if (!f.titre.value.trim() || !f.description.value.trim()) return showMsg('Indiquez au moins le titre et la description.', false);
     if (!f.nom.value.trim() || !f.telephone.value.trim()) return showMsg('Indiquez votre nom et votre téléphone.', false);
     if (!document.getElementById('consent').checked) return showMsg('Merci d\'accepter les conditions.', false);
@@ -165,6 +168,7 @@
     btn.disabled = true; btn.textContent = 'Envoi…';
 
     var payload = {
+      website: f.website.value,
       titre: f.titre.value.trim(),
       competences: selected,
       description: f.description.value.trim(),
