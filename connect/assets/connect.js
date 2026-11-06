@@ -128,6 +128,7 @@
 
   /* ---------- Source des données : webhook n8n (repli sur démo) ---------- */
   var PROVIDERS_ENDPOINT = 'https://n8n.akwabaia.com/webhook/connect-providers';
+  var WA_FALLBACK_HTML = 'Service momentanément indisponible. Écrivez-nous sur <a href="https://wa.me/2250778627460" target="_blank" rel="noopener" style="color:var(--green-dark);font-weight:700">WhatsApp</a>, on vous répond vite.';
 
   function fetchProviders() {
     return fetch(PROVIDERS_ENDPOINT)
@@ -138,9 +139,8 @@
         return list;
       })
       .catch(function (e) {
-        // Repli : si le webhook ne répond pas (ou aucun prestataire), on montre la démo
-        if (typeof console !== 'undefined') console.warn('Annuaire : repli sur les données de démo —', e.message);
-        return SAMPLE_PROVIDERS;
+        if (typeof console !== 'undefined') console.warn('Annuaire indisponible —', e.message);
+        throw e;
       });
   }
 
@@ -364,12 +364,14 @@
         });
         list.sort(function (a, b) { return sort === 'reviews' ? (b.reviews || 0) - (a.reviews || 0) : (b.rating || 0) - (a.rating || 0); });
         grid.innerHTML = list.map(providerCard).join('');
-        countEl.textContent = list.length;
+        if (countEl) countEl.textContent = list.length;
         emptyEl.style.display = list.length ? 'none' : 'block';
       }
       [fSkill, fZone, fType, fPeriod, fSort].forEach(function (el) { if (el) el.addEventListener('change', render); });
       global.__rerender = function () { populatePeriods(fPeriod); render(); };
       render();
+    }).catch(function () {
+      if (emptyEl) { emptyEl.style.display = 'block'; emptyEl.innerHTML = WA_FALLBACK_HTML; }
     });
   }
 
@@ -379,8 +381,12 @@
     var id = new URLSearchParams(location.search).get('id');
     fetchProviders().then(function (all) {
       var p = all.filter(function (x) { return x.id === id; })[0] || all[0];
+      if (!p) throw new Error('introuvable');
       global.__rerender = function () { paintProfile(p); };
       paintProfile(p);
+    }).catch(function () {
+      var n = document.getElementById('pName');
+      if (n) n.innerHTML = WA_FALLBACK_HTML;
     });
   }
 
